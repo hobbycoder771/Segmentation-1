@@ -1,0 +1,277 @@
+================================================================================
+YOLO BUILDING DETECTION TRAINING ENVIRONMENT - DELIVERY SUMMARY
+================================================================================
+
+PROJECT OVERVIEW
+================================================================================
+Complete Python pipeline for creating YOLO training datasets for building 
+detection from GeoBizkaia geospatial data (geopackages + ArcGIS imagery).
+
+WHAT WAS CREATED
+================================================================================
+
+1. CORE PYTHON SCRIPTS
+   ├── src/geobizkaia/yolo_data_builder.py (350+ lines)
+   │   Main orchestration class for the complete pipeline
+   │   • Download imagery from ArcGIS MapServer
+   │   • Convert PNG to georeferenced GeoTIFF
+   │   • Intersect buildings with tile extents
+   │   • Convert building polygons to YOLO annotations
+   │   • Split dataset into train/val/test
+   │   • Generate data.yaml configuration
+   │
+   ├── src/geobizkaia/run_yolo_pipeline.py (170+ lines)
+   │   Command-line interface for easy execution
+   │   • --test: Quick 3-extent test
+   │   • --full: Process all extents with splitting
+   │   • --limit N: Custom extent count
+   │   • Customizable train/val/test ratios
+   │
+   └── src/geobizkaia/inspect_gpkg.py (80+ lines)
+       Utility to inspect geopackage structure
+       • List all layers
+       • Show geometry types and CRS
+       • Display feature counts and samples
+
+2. CONFIGURATION & REQUIREMENTS
+   ├── requirements_yolo.txt
+   │   All Python dependencies (geopandas, rasterio, requests, etc.)
+   │
+   └── data.yaml (auto-generated)
+       YOLO training configuration
+
+3. DOCUMENTATION
+   ├── README_YOLO.md
+   │   Complete overview with examples and troubleshooting
+   │
+   ├── QUICKSTART.md
+   │   5-minute setup guide for fast onboarding
+   │
+   ├── YOLO_SETUP_GUIDE.md
+   │   Detailed step-by-step documentation
+   │
+   ├── COORDINATE_TRANSFORMATION.md
+   │   Technical guide on geometry transformations
+   │   Explains map → pixel → normalized YOLO conversion
+   │
+   └── DELIVERY_SUMMARY.txt
+       This file
+
+FEATURES
+================================================================================
+✓ Geospatial Integration
+  - Works with GeoPackage files (.gpkg)
+  - Automatic CRS reprojection if needed
+  - Support for multiple geometry types
+
+✓ ArcGIS Integration
+  - Automatic imagery download from MapServer export API
+  - Supports custom imagery URLs
+  - Error handling and retry logic
+
+✓ Georeferencing
+  - PNG to GeoTIFF conversion with affine transforms
+  - Proper coordinate system handling
+  - Maintains georeferencing for accuracy
+
+✓ Vector to YOLO Conversion
+  - Building polygons → pixel coordinates
+  - Bounding box extraction
+  - Normalization to [0,1] range
+  - Automatic CRS transformation
+
+✓ Dataset Organization
+  - Automatic train/val/test splitting
+  - Customizable split ratios (default: 70/15/15)
+  - Organized directory structure
+  - data.yaml generation for YOLOv8
+
+✓ Easy to Use
+  - Simple CLI with sensible defaults
+  - Test mode for validation
+  - Detailed logging and progress tracking
+  - Comprehensive error handling
+
+QUICK START
+================================================================================
+
+1. Install dependencies:
+   pip install -r requirements_yolo.txt
+
+2. Identify layer names in your geopackages:
+   cd src/geobizkaia
+   python inspect_gpkg.py ../../data/vector/extents/extent.gpkg
+   python inspect_gpkg.py ../../data/vector/carto/karto.gpkg
+
+3. Update layer names if needed in run_yolo_pipeline.py
+
+4. Test with 3 extents:
+   python run_yolo_pipeline.py --test
+
+5. Process full dataset:
+   python run_yolo_pipeline.py --full
+
+OUTPUT STRUCTURE
+================================================================================
+
+dataset/
+└── yolo_buildings/
+    ├── images/
+    │   ├── train/          (70% of images)
+    │   ├── val/            (15% of images)
+    │   └── test/           (15% of images)
+    ├── labels/
+    │   ├── train/          (corresponding annotations)
+    │   ├── val/
+    │   └── test/
+    └── data.yaml           (YOLO configuration)
+
+YOLO FORMAT
+================================================================================
+
+Each building annotation:
+<class_id> <x_center> <y_center> <width> <height>
+
+All values normalized to [0,1]:
+- class_id: 0 (buildings)
+- x_center, y_center: normalized center coordinates
+- width, height: normalized dimensions
+
+Example annotation file:
+0 0.512 0.623 0.128 0.156
+0 0.784 0.445 0.095 0.112
+0 0.234 0.567 0.089 0.102
+
+COMMAND EXAMPLES
+================================================================================
+
+# Test mode (3 extents, no splitting)
+python run_yolo_pipeline.py --test
+
+# Full processing
+python run_yolo_pipeline.py --full
+
+# Custom: 10 extents with 80/10/10 split
+python run_yolo_pipeline.py --limit 10 --split --train-ratio 0.8 --val-ratio 0.1
+
+# Custom image size
+python run_yolo_pipeline.py --full --image-size 2048
+
+# Custom layer names
+python run_yolo_pipeline.py --full --extents-layer my_extent --buildings-layer my_buildings
+
+# Get help
+python run_yolo_pipeline.py --help
+
+TRAINING WITH YOLOV8
+================================================================================
+
+After generating the dataset, train with YOLOv8:
+
+from ultralytics import YOLO
+
+model = YOLO('yolov8n.pt')  # nano/small/medium/large/xlarge
+
+results = model.train(
+    data='dataset/yolo_buildings/data.yaml',
+    epochs=100,
+    imgsz=4096,
+    device=0,
+    patience=20,
+    save=True,
+    name='buildings_detection'
+)
+
+TROUBLESHOOTING
+================================================================================
+
+Issue: Layer not found
+→ Run inspect_gpkg.py to see available layers
+
+Issue: No buildings found
+→ Check CRS alignment and extent boundaries
+
+Issue: Download failures
+→ Verify internet connection and ArcGIS URL
+
+Issue: Memory issues
+→ Use --limit or reduce --image-size
+
+Issue: Missing annotations
+→ Check if buildings actually intersect extents
+
+DATA FLOW DIAGRAM
+================================================================================
+
+karto.gpkg (buildings)      extent.gpkg (tile extents)
+        ↓                            ↓
+    Buildings                    Extents
+        ↓                            ↓
+        └────────────┬──────────────┘
+                     ↓
+         Download Imagery from ArcGIS
+                     ↓
+      Georeferenced GeoTIFF (4096×4096)
+                     ↓
+      Intersect Buildings with Extent
+                     ↓
+    Polygon → Pixel Coordinates → Normalize [0,1]
+                     ↓
+        YOLO Annotations (.txt files)
+                     ↓
+          Train/Val/Test Split
+                     ↓
+       Ready for YOLOv8 Training
+
+KEY CONFIGURATION
+================================================================================
+
+Default Settings:
+- Image size: 4096×4096 pixels
+- CRS: EPSG:3857 (Web Mercator)
+- Train/Val/Test split: 70%/15%/15%
+- ArcGIS MapServer: GeoBizkaia ORTO_EJ_2024
+
+Customizable:
+- Image size (--image-size)
+- Layer names (--extents-layer, --buildings-layer)
+- Split ratios (--train-ratio, --val-ratio)
+- Extent limit (--limit)
+- Imagery URL (--imagery-url)
+
+DEPENDENCIES
+================================================================================
+
+Core Libraries:
+- geopandas (geospatial dataframe operations)
+- rasterio (raster data I/O and transforms)
+- shapely (geometric operations)
+- fiona (vector I/O)
+- requests (HTTP downloads)
+- numpy (array operations)
+- pandas (data processing)
+
+Optional (for training):
+- ultralytics (YOLOv8)
+- torch (PyTorch backend)
+- torchvision (computer vision functions)
+
+FILE MANIFEST
+================================================================================
+
+Python Scripts:
+✓ src/geobizkaia/yolo_data_builder.py
+✓ src/geobizkaia/run_yolo_pipeline.py
+✓ src/geobizkaia/inspect_gpkg.py
+
+Documentation:
+✓ README_YOLO.md
+✓ QUICKSTART.md
+✓ YOLO_SETUP_GUIDE.md
+✓ COORDINATE_TRANSFORMATION.md
+✓ DELIVERY_SUMMARY.txt (this file)
+
+Configuration:
+✓ requirements_yolo.txt
+
+N

@@ -1,0 +1,247 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    YOLO BUILDING DETECTION SETUP                          ║
+║                           START HERE                                  ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+Welcome! You now have a complete YOLO training environment for building 
+detection. This file will guide you through getting started.
+
+═══════════════════════════════════════════════════════════════════════════════
+DOCUMENTATION INDEX
+═══════════════════════════════════════════════════════════════════════════════
+
+Choose one based on your needs:
+
+1.   QUICKEST (5 minutes)
+   → Read: QUICKSTART.md
+   → Start testing immediately
+
+2.   STEP-BY-STEP (15 minutes)
+   → Read: USAGE_FLOW.txt
+   → Visual workflow with troubleshooting
+
+3.   COMPLETE GUIDE (30 minutes)
+   → Read: YOLO_SETUP_GUIDE.md
+   → Detailed documentation with theory
+
+4.   TECHNICAL DEEP DIVE
+   → Read: COORDINATE_TRANSFORMATION.md
+   → Understand how coordinates are converted
+
+5.   WHAT WAS CREATED
+   → Read: DELIVERY_SUMMARY.txt
+   → Complete inventory of all files
+
+═══════════════════════════════════════════════════════════════════════════════
+
+  60-SECOND QUICK START
+═══════════════════════════════════════════════════════════════════════════════
+
+# Step 1: Install dependencies
+pip install -r requirements_yolo.txt
+
+# Step 2: Identify layer names in your geopackages
+cd src/geobizkaia
+python inspect_gpkg.py ../../data/vector/extents/extent.gpkg
+python inspect_gpkg.py ../../data/vector/carto/karto.gpkg
+
+# Step 3: Test with 3 extents (verify everything works)
+python run_yolo_pipeline.py --test
+
+# Step 4: Process full dataset
+python run_yolo_pipeline.py --full
+
+# Step 5: Train YOLO model
+# (Use dataset/yolo_buildings/data.yaml for training)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📂 FILE ORGANIZATION
+═══════════════════════════════════════════════════════════════════════════════
+
+Core Scripts (src/geobizkaia/):
+├── yolo_data_builder.py      ← Main YOLO dataset builder
+├── run_yolo_pipeline.py      ← Command-line interface (USE THIS)
+└── inspect_gpkg.py           ← Inspect geopackage layers
+
+Input Data (data/):
+├── vector/extents/extent.gpkg   ← Tile extents
+└── vector/carto/karto.gpkg      ← Building data
+
+Output Dataset (dataset/):
+└── yolo_buildings/
+    ├── images/train, val, test
+    ├── labels/train, val, test
+    └── data.yaml
+
+Documentation (root):
+├── START_HERE.txt                    ← You are here
+├── QUICKSTART.md                     ← Fastest way to start
+├── USAGE_FLOW.txt                    ← Visual workflow
+├── YOLO_SETUP_GUIDE.md              ← Complete guide
+├── COORDINATE_TRANSFORMATION.md     ← Technical details
+├── README_YOLO.md                   ← Overview
+└── DELIVERY_SUMMARY.txt             ← What was created
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 YOUR WORKFLOW
+═══════════════════════════════════════════════════════════════════════════════
+
+1️⃣  INSTALL (Once)
+    → pip install -r requirements_yolo.txt
+
+2️⃣  IDENTIFY (Once)
+    → python src/geobizkaia/inspect_gpkg.py data/vector/extents/extent.gpkg
+    → python src/geobizkaia/inspect_gpkg.py data/vector/carto/karto.gpkg
+    → Note your layer names (e.g., "extent", "buildings")
+
+3️⃣  CONFIGURE (If needed)
+    → Edit layer names in run_yolo_pipeline.py
+    → Most people can skip this step
+
+4️⃣  TEST (Before full run)
+    → python src/geobizkaia/run_yolo_pipeline.py --test
+    → Verify 3 images and labels are created
+
+5️⃣  PROCESS (Full dataset)
+    → python src/geobizkaia/run_yolo_pipeline.py --full
+    → Sit back, let it download and process
+
+6️⃣  TRAIN (Your model)
+    → Use dataset/yolo_buildings/data.yaml
+    → Train with YOLOv8 or other YOLO framework
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔧 COMMAND CHEATSHEET
+═══════════════════════════════════════════════════════════════════════════════
+
+# Basic operations
+python src/geobizkaia/run_yolo_pipeline.py --test          # Test with 3 extents
+python src/geobizkaia/run_yolo_pipeline.py --full          # Process all extents
+
+# Custom configuration
+python src/geobizkaia/run_yolo_pipeline.py --limit 5 --split            # 5 extents
+python src/geobizkaia/run_yolo_pipeline.py --full --image-size 2048     # Smaller images
+python src/geobizkaia/run_yolo_pipeline.py --full --train-ratio 0.8     # 80/10/10 split
+
+# Custom layer names
+python src/geobizkaia/run_yolo_pipeline.py --full --extents-layer my_extent --buildings-layer my_buildings
+
+# Help
+python src/geobizkaia/run_yolo_pipeline.py --help
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❓ COMMON QUESTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+Q: What layer names should I use?
+A: Run inspect_gpkg.py to see what's in your geopackages.
+   Most people don't need to change the defaults.
+
+Q: Can I test with fewer extents?
+A: Yes! Use: python run_yolo_pipeline.py --limit 5 --split
+
+Q: How long does full processing take?
+A: Depends on extent count and internet speed.
+   Typically 10-30 seconds per extent.
+
+Q: What if I get a "Layer not found" error?
+A: Run inspect_gpkg.py to see actual layer names.
+   Update the layer name in run_yolo_pipeline.py or CLI args.
+
+Q: Can I change the train/val/test split?
+A: Yes! Use: --train-ratio 0.8 --val-ratio 0.1
+
+Q: What's the output format?
+A: YOLO format with:
+   - GeoTIFF images (4096×4096 pixels)
+   - Text annotations (normalized bounding boxes)
+   - data.yaml for YOLOv8 training
+
+Q: How do I train a YOLO model?
+A: Use dataset/yolo_buildings/data.yaml with YOLOv8:
+   from ultralytics import YOLO
+   model = YOLO('yolov8n.pt')
+   model.train(data='dataset/yolo_buildings/data.yaml', epochs=100)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ CHECKLIST FOR SUCCESS
+═══════════════════════════════════════════════════════════════════════════════
+
+Before you start:
+□ Python 3.8+ installed
+□ Internet connection (for imagery downloads)
+□ ~20GB free disk space (varies with extent count)
+
+Setup:
+□ Read QUICKSTART.md or USAGE_FLOW.txt
+□ Run: pip install -r requirements_yolo.txt
+□ Run: inspect_gpkg.py to check layer names
+
+Testing:
+□ Run: python run_yolo_pipeline.py --test
+□ Check dataset/yolo_buildings/ folder created
+□ Verify images and labels exist
+
+Full Dataset:
+□ Run: python run_yolo_pipeline.py --full
+□ Wait for completion (check progress in console)
+□ Verify train/val/test folders in dataset/yolo_buildings/
+
+Training:
+□ Install ultralytics: pip install ultralytics
+□ Create training script
+□ Use dataset/yolo_buildings/data.yaml
+□ Train model with YOLOv8
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📞 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+Error: "Layer not found"
+→ Run: python inspect_gpkg.py <your_gpkg_file>
+→ Update layer names in configuration
+
+Error: "No buildings found"
+→ Check if buildings actually intersect with extents
+→ Verify CRS is same (EPSG:3857)
+
+Error: Download failures
+→ Check internet connection
+→ Verify ArcGIS URL is accessible
+→ Try manual download to debug
+
+Memory issues
+→ Use: --image-size 2048 (smaller images)
+→ Use: --limit 10 (process fewer extents)
+
+For more help:
+→ Read YOLO_SETUP_GUIDE.md (troubleshooting section)
+→ Read USAGE_FLOW.txt (workflow diagram)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎓 LEARNING RESOURCES
+═══════════════════════════════════════════════════════════════════════════════
+
+YOLO Format:
+https://docs.ultralytics.com/datasets/detect/
+
+YOLOv8 Training:
+https://docs.ultralytics.com/modes/train/
+
+GeoPandas (vector data):
+https://geopandas.org/
+
+Rasterio (raster data):
+https://rasterio.readthedocs.io/
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 READY TO START?
+════════════════════════════════════════════════════════════
