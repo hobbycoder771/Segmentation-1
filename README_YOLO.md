@@ -1,10 +1,10 @@
 # YOLO Building Detection Training Environment
 
-## 📋 Summary
+## Summary
 
 I've created a complete pipeline for building YOLO training datasets from GeoBizkaia geospatial data. The system downloads building imagery from ArcGIS MapServer and converts building vector data into YOLO-format annotations.
 
-## 🎯 What Was Created
+## What Was Created
 
 ### Core Scripts
 
@@ -35,14 +35,16 @@ I've created a complete pipeline for building YOLO training datasets from GeoBiz
 - **`YOLO_SETUP_GUIDE.md`** - Detailed documentation
 - **`README_YOLO.md`** - This file
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install
+
 ```bash
 pip install -r requirements_yolo.txt
 ```
 
 ### 2. Identify Your Layer Names
+
 ```bash
 cd src/geobizkaia
 python inspect_gpkg.py ../../data/vector/extents/extent.gpkg
@@ -50,16 +52,18 @@ python inspect_gpkg.py ../../data/vector/carto/karto.gpkg
 ```
 
 ### 3. Test (3 extents)
+
 ```bash
 python run_yolo_pipeline.py --test
 ```
 
 ### 4. Full Pipeline
+
 ```bash
 python run_yolo_pipeline.py --full
 ```
 
-## 📊 Data Flow
+## Data Flow
 
 ```
 Vector Data (karto.gpkg)           Tile Extents (extent.gpkg)
@@ -83,7 +87,7 @@ Vector Data (karto.gpkg)           Tile Extents (extent.gpkg)
             Ready for YOLOv8 Training
 ```
 
-## 📁 Output Structure
+## Output Structure
 
 ```
 dataset/yolo_buildings/
@@ -98,25 +102,28 @@ dataset/yolo_buildings/
 └── data.yaml
 ```
 
-## 🎯 YOLO Format
+## YOLO Format
 
 Each building is represented as:
+
 ```
 <class_id> <x_center> <y_center> <width> <height>
 ```
 
 All values normalized to [0, 1]:
+
 - `class_id`: 0 (buildings only)
 - `x_center`, `y_center`: normalized center of building
 - `width`, `height`: normalized dimensions
 
 Example:
+
 ```
 0 0.512 0.623 0.128 0.156
 0 0.784 0.445 0.095 0.112
 ```
 
-## 🔧 Configuration Options
+## Configuration Options
 
 Update layer names in `run_yolo_pipeline.py`:
 
@@ -126,11 +133,12 @@ parser.add_argument("--buildings-layer", default="buildings") # Your layer name
 ```
 
 Or pass via command line:
+
 ```bash
 python run_yolo_pipeline.py --full --extents-layer my_extent --buildings-layer my_buildings
 ```
 
-## 📊 Dataset Customization
+## Dataset Customization
 
 ```bash
 # 80/10/10 split
@@ -143,7 +151,7 @@ python run_yolo_pipeline.py --full --image-size 2048
 python run_yolo_pipeline.py --limit 5 --split
 ```
 
-## 🤖 Training with YOLOv8
+## Training with YOLOv8
 
 ```python
 from ultralytics import YOLO
@@ -161,52 +169,52 @@ results = model.train(
 )
 ```
 
-## 🔍 Key Features
+## Key Features
 
-✅ **Geospatial Integration**: Works with geopackages and coordinate systems
-✅ **ArcGIS Integration**: Automatic imagery download from MapServer
-✅ **Automatic Georeferencing**: PNG to GeoTIFF conversion with transforms
-✅ **CRS Handling**: Automatic reprojection if needed
-✅ **Coordinate Transformation**: Building polygons → pixel coordinates → normalized YOLO format
-✅ **Dataset Splitting**: Automatic train/val/test organization
-✅ **Easy CLI**: Simple command-line interface for all operations
-✅ **Logging**: Detailed progress tracking
+**Geospatial Integration**: Works with geopackages and coordinate systems
+**ArcGIS Integration**: Automatic imagery download from MapServer
+**Automatic Georeferencing**: PNG to GeoTIFF conversion with transforms
+**CRS Handling**: Automatic reprojection if needed
+**Coordinate Transformation**: Building polygons → pixel coordinates → normalized YOLO format
+**Dataset Splitting**: Automatic train/val/test organization
+**Easy CLI**: Simple command-line interface for all operations
+**Logging**: Detailed progress tracking
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Layer not found | Run `inspect_gpkg.py` to see actual layer names |
-| No buildings in extent | Check CRS match or extent boundaries |
-| Download failures | Check internet, verify ArcGIS URL |
-| Memory issues | Use `--limit` or reduce `--image-size` |
-| API errors | Verify coordinates are in correct CRS (EPSG:3857) |
+| Issue                  | Solution                                          |
+| ---------------------- | ------------------------------------------------- |
+| Layer not found        | Run `inspect_gpkg.py` to see actual layer names   |
+| No buildings in extent | Check CRS match or extent boundaries              |
+| Download failures      | Check internet, verify ArcGIS URL                 |
+| Memory issues          | Use `--limit` or reduce `--image-size`            |
+| API errors             | Verify coordinates are in correct CRS (EPSG:3857) |
 
-## 📝 Files Overview
+## Files Overview
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `yolo_data_builder.py` | 350+ | Core YOLO dataset builder |
-| `run_yolo_pipeline.py` | 170+ | CLI runner |
-| `inspect_gpkg.py` | 80+ | Geopackage inspector |
-| `requirements_yolo.txt` | 20+ | Dependencies |
+| File                    | Lines | Purpose                   |
+| ----------------------- | ----- | ------------------------- |
+| `yolo_data_builder.py`  | 350+  | Core YOLO dataset builder |
+| `run_yolo_pipeline.py`  | 170+  | CLI runner                |
+| `inspect_gpkg.py`       | 80+   | Geopackage inspector      |
+| `requirements_yolo.txt` | 20+   | Dependencies              |
 
-## 🎓 Learning Resources
+## Learning Resources
 
 - [YOLO Format Docs](https://docs.ultralytics.com/datasets/detect/)
 - [YOLOv8 Training](https://docs.ultralytics.com/modes/train/)
 - [GeoPandas](https://geopandas.org/)
 - [Rasterio](https://rasterio.readthedocs.io/)
 
-## 📌 Next Steps
+## Next Steps
 
-1. ✅ Install dependencies
-2. ✅ Run `inspect_gpkg.py` to identify layers
-3. ✅ Update layer names if needed
-4. ✅ Test with `--test` flag
-5. ✅ Run `--full` pipeline
-6. 🔄 Train YOLOv8 model
+1. Install dependencies
+2. Run `inspect_gpkg.py` to identify layers
+3. Update layer names if needed
+4. Test with `--test` flag
+5. Run `--full` pipeline
+6. Train YOLOv8 model
 
 ---
 
-**Ready to build your building detection model!** 🏗️
+**Ready to build your building detection model!**

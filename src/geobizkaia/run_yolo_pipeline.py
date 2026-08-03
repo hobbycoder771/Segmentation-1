@@ -1,10 +1,14 @@
 """
 Simple runner script for the YOLO data building pipeline.
 
+This script extracts imagery and clips vector data for YOLO building detection dataset.
+
 Usage:
     python run_yolo_pipeline.py --help
-    python run_yolo_pipeline.py --test --limit 5
+    python run_yolo_pipeline.py --test
     python run_yolo_pipeline.py --full
+    python run_yolo_pipeline.py --limit 5 --split
+    python run_yolo_pipeline.py --test --no-vector-clipping
 """
 
 import argparse
@@ -19,14 +23,20 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python run_yolo_pipeline.py --test --limit 3
-    Test with 3 extents, no splitting
+  python run_yolo_pipeline.py --test
+    Test mode: 3 extents, imagery + vector clipping, no splitting
   
   python run_yolo_pipeline.py --full
-    Process all extents and split into train/val/test
+    Full mode: all extents, imagery + vector clipping, train/val/test split
   
   python run_yolo_pipeline.py --limit 10 --split
-    Process 10 extents with train/val/test splitting
+    Process 10 extents with imagery + vector clipping and splitting
+  
+  python run_yolo_pipeline.py --test --no-vector-clipping
+    Test mode without vector clipping (imagery only)
+  
+  python run_yolo_pipeline.py --limit 5 --carto-output-path ./custom_carto
+    Custom output path for vector data
         """
     )
     
@@ -89,6 +99,21 @@ Examples:
         default=0.15,
         help="Validation set ratio (default: 0.15)"
     )
+    parser.add_argument(
+        "--feature-server-url",
+        default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/Kartografia_BTB_Kartografia_5000/FeatureServer/16/query",
+        help="ArcGIS FeatureServer URL for vector data clipping"
+    )
+    parser.add_argument(
+        "--carto-output-path",
+        default="../../data/vector/carto",
+        help="Output path for clipped vector data (geopackage)"
+    )
+    parser.add_argument(
+        "--no-vector-clipping",
+        action="store_true",
+        help="Disable vector data clipping from FeatureServer"
+    )
     
     args = parser.parse_args()
     
@@ -134,10 +159,17 @@ Examples:
     print(f"  Split: {args.split}")
     if args.split:
         print(f"  Train/Val/Test ratio: {args.train_ratio:.1%}/{args.val_ratio:.1%}/{1-args.train_ratio-args.val_ratio:.1%}")
+    print(f"  Vector clipping: {'Disabled' if args.no_vector_clipping else 'Enabled'}")
+    if not args.no_vector_clipping:
+        print(f"  Carto output: {args.carto_output_path}")
     print(f"  Output: {args.output_dir}")
     print()
     
     try:
+        # Prepare feature server URL (only if vector clipping is enabled)
+        feature_server_url = None if args.no_vector_clipping else args.feature_server_url
+        carto_output_path = None if args.no_vector_clipping else args.carto_output_path
+        
         builder = YOLODataBuilder(
             imagery_url=args.imagery_url,
             extents_gpkg_path=str(extents_gpkg),
@@ -146,7 +178,9 @@ Examples:
             buildings_layer_name=args.buildings_layer,
             output_dir=args.output_dir,
             image_size=args.image_size,
-            crs="EPSG:3857"
+            crs="EPSG:3857",
+            feature_server_url=feature_server_url,
+            carto_output_path=carto_output_path
         )
         
         # Run pipeline with custom split ratios if provided

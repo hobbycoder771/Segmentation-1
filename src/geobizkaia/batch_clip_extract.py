@@ -169,7 +169,7 @@ def extract_map_server_by_extent(
     )
 
     os.remove(f"{image_path}\{image_name}.png")
-    
+
     print("extracted image")
 
 
