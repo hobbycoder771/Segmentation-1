@@ -503,10 +503,9 @@ class YOLODataBuilder:
                                     f"{new_width:.6f} {new_height:.6f}"
                                 )
 
-                    # Store annotations for this tile
+                    # Store annotations for this tile (including empty tiles)
                     tile_path = f"extent_{extent_id:04d}_tile_{tile_id:03d}"
-                    if tile_anns:
-                        tile_annotations[tile_path] = tile_anns
+                    tile_annotations[tile_path] = tile_anns
 
                     tile_id += 1
 
