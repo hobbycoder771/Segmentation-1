@@ -629,7 +629,7 @@ class YOLODataBuilder:
             self.buildings_gdf.geometry.intersects(extent_geometry)
         ]
 
-    def buildings_to_yolo_annotations(self, geotiff_path, extent_geometry, extent_id):
+    def buildings_to_yolo_annotations(self, geotiff_path, extent_geometry, extent_id, buildings_gdf=None):
         """
         Convert building polygons to YOLO format annotations.
 
@@ -644,6 +644,8 @@ class YOLODataBuilder:
             The extent geometry
         extent_id : int
             Unique identifier for the extent
+        buildings_gdf : GeoDataFrame, optional
+            Buildings GeoDataFrame for this extent. If None, uses self.buildings_gdf
 
         Returns
         -------
@@ -652,7 +654,12 @@ class YOLODataBuilder:
         """
         try:
             # Get buildings in this extent
-            buildings = self.get_buildings_in_extent(extent_geometry)
+            if buildings_gdf is not None:
+                buildings = buildings_gdf[
+                    buildings_gdf.geometry.intersects(extent_geometry)
+                ]
+            else:
+                buildings = self.get_buildings_in_extent(extent_geometry)
 
             if len(buildings) == 0:
                 logger.warning(f"No buildings found in extent {extent_id}")
@@ -740,11 +747,24 @@ class YOLODataBuilder:
             extent_geom = extent_row.geometry
             extent_bounds = extent_geom.bounds
 
-            # Clip vector data from FeatureServer
+            # Clip vector data from FeatureServer and load buildings for this extent
+            buildings_gdf_extent = None
             if self.feature_server_url:
                 self.clip_feature_server_by_extent(
                     extent_bounds, "buildings", extent_id
                 )
+                # Load the clipped buildings for this extent
+                try:
+                    layer_name = f"buildings_tile_{extent_id}"
+                    outfile = os.path.join(self.carto_output_path, "karto.gpkg")
+                    buildings_gdf_extent = gpd.read_file(outfile, layer=layer_name)
+                    logger.info(f"Loaded {len(buildings_gdf_extent)} buildings from clipped layer for extent {extent_id}")
+                except Exception as e:
+                    logger.warning(f"Could not load clipped buildings for extent {extent_id}: {e}")
+                    buildings_gdf_extent = None
+            else:
+                # Use pre-loaded buildings data
+                buildings_gdf_extent = self.buildings_gdf
 
             # Download imagery
             geotiff_path = self.download_imagery(extent_bounds, extent_id)
@@ -752,9 +772,9 @@ class YOLODataBuilder:
                 continue
 
             # Create annotations (only if buildings data available)
-            if self.buildings_gdf is not None and len(self.buildings_gdf) > 0:
+            if buildings_gdf_extent is not None and len(buildings_gdf_extent) > 0:
                 label_path = self.buildings_to_yolo_annotations(
-                    geotiff_path, extent_geom, extent_id
+                    geotiff_path, extent_geom, extent_id, buildings_gdf_extent
                 )
 
                 if label_path:
