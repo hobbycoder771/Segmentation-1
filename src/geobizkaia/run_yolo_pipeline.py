@@ -199,20 +199,20 @@ Examples:
     print()
 
     try:
-         # Clean up previous dataset if it exists
-         output_path = Path(args.output_dir)
-         if output_path.exists():
-             print(f"\nCleaning up previous dataset at: {output_path}")
-             shutil.rmtree(output_path)
-             print("Previous dataset removed.")
+        # Clean up previous dataset if it exists
+        output_path = Path(args.output_dir)
+        if output_path.exists():
+            print(f"\nCleaning up previous dataset at: {output_path}")
+            shutil.rmtree(output_path)
+            print("Previous dataset removed.")
 
-         # Prepare feature server URL (only if vector clipping is enabled)
-         feature_server_url = (
-             None if args.no_vector_clipping else args.feature_server_url
-         )
-         carto_output_path = None if args.no_vector_clipping else args.carto_output_path
+        # Prepare feature server URL (only if vector clipping is enabled)
+        feature_server_url = (
+            None if args.no_vector_clipping else args.feature_server_url
+        )
+        carto_output_path = None if args.no_vector_clipping else args.carto_output_path
 
-         builder = YOLODataBuilder(
+        builder = YOLODataBuilder(
             imagery_url=args.imagery_url,
             extents_gpkg_path=str(extents_gpkg),
             extents_layer_name=args.extents_layer,
