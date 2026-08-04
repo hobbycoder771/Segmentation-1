@@ -283,10 +283,14 @@ class YOLODataBuilder:
         """Convert PNG to georeferenced GeoTIFF."""
         with rasterio.open(png_file) as src:
             image = src.read()
+            # Drop alpha channel if present
+            if image.shape[0] == 4:
+                image = image[:3]
+            
             width = src.width
             height = src.height
             profile = src.profile
-
+            
         minx, miny, maxx, maxy = extent_bounds
         transform = from_bounds(minx, miny, maxx, maxy, width, height)
 
