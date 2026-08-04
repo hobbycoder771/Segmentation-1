@@ -299,6 +299,7 @@ class YOLODataBuilder:
             crs="EPSG:3857",
             transform=transform,
             compress="lzw",
+            count=image.shape[0],  # Update count to match actual channels
         )
 
         with rasterio.open(output_tif, "w", **profile) as dst:

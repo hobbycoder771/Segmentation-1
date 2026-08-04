@@ -107,10 +107,10 @@ Examples:
         help="Validation set ratio (default: 0.15)",
     )
     parser.add_argument(
-        "--feature-server-url",
-        default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/Kartografia_BTB_Kartografia_5000/FeatureServer/16/query",
-        help="ArcGIS FeatureServer URL for vector data clipping",
-    )
+         "--feature-server-url",
+         default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/Kartografia_BTB_Cartografia_5000/FeatureServer/16/query",
+         help="ArcGIS FeatureServer URL for vector data clipping",
+     )
     parser.add_argument(
         "--carto-output-path",
         default="../../data/vector/carto",
