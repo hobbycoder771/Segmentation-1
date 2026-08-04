@@ -4,9 +4,16 @@ dataset/yolo_buildings/labels/
 dataset/yolo_buildings/data.yaml
 
 # YOLO Model Files
-*.pt
-*.yaml
+# Ignore training runs but track persistent best models
 model/runs/
+*.pt
+!model/best_yolov8*.pt
+model/training_history_*.json
+!model/training_history_*.json
+
+# YAML files - ignore but track important ones
+*.yaml
+!dataset/yolo_buildings/data.yaml
 
 # Python Cache
 __pycache__/
