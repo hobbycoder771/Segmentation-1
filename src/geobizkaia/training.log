@@ -1,0 +1,864 @@
+2026-08-03 14:56:18,400 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 14:56:18,400 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 14:56:18,400 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 14:56:18,400 - INFO - Running full training pipeline...
+2026-08-03 14:56:18,400 - INFO - ============================================================
+2026-08-03 14:56:18,400 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 14:56:18,400 - INFO - ============================================================
+2026-08-03 14:56:18,400 - INFO -   Model Size: yolov8m
+2026-08-03 14:56:18,400 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 14:56:18,400 - INFO -   Epochs: 50
+2026-08-03 14:56:18,400 - INFO -   Batch Size: 4
+2026-08-03 14:56:18,400 - INFO -   Image Size: 4096
+2026-08-03 14:56:18,400 - INFO -   Device: 0
+2026-08-03 14:56:18,400 - INFO -   Early Stopping Patience: 20
+2026-08-03 14:56:18,400 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 14:56:18,400 - INFO - ============================================================
+2026-08-03 14:56:18,400 - INFO - Loading model: yolov8m.pt
+2026-08-03 14:56:21,164 - INFO - Starting training...
+2026-08-03 14:56:21,372 - ERROR - Training failed: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 152, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 806, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 63, in __init__
+    super().__init__(cfg, overrides, _callbacks)
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 131, in __init__
+    self.device = select_device(self.args.device)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\utils\torch_utils.py", line 275, in select_device
+    raise ValueError(
+ValueError: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+
+2026-08-03 14:56:21,372 - ERROR - Fatal error: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 359, in main
+    train_result = trainer.train(resume=args.resume)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 152, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 806, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 63, in __init__
+    super().__init__(cfg, overrides, _callbacks)
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 131, in __init__
+    self.device = select_device(self.args.device)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\utils\torch_utils.py", line 275, in select_device
+    raise ValueError(
+ValueError: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+
+2026-08-03 14:58:15,197 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 14:58:15,197 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 14:58:15,197 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 14:58:15,197 - INFO - Running full training pipeline...
+2026-08-03 14:58:15,197 - INFO - ============================================================
+2026-08-03 14:58:15,197 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 14:58:15,197 - INFO - ============================================================
+2026-08-03 14:58:15,197 - INFO -   Model Size: yolov8m
+2026-08-03 14:58:15,197 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 14:58:15,197 - INFO -   Epochs: 50
+2026-08-03 14:58:15,197 - INFO -   Batch Size: 4
+2026-08-03 14:58:15,197 - INFO -   Image Size: 4096
+2026-08-03 14:58:15,197 - INFO -   Device: -1
+2026-08-03 14:58:15,197 - INFO -   Early Stopping Patience: 20
+2026-08-03 14:58:15,197 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 14:58:15,197 - INFO - ============================================================
+2026-08-03 14:58:15,197 - INFO - Loading model: yolov8m.pt
+2026-08-03 14:58:15,350 - INFO - Starting training...
+2026-08-03 14:59:54,809 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 14:59:54,810 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 14:59:54,810 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 14:59:54,810 - INFO - Running full training pipeline...
+2026-08-03 14:59:54,810 - INFO - ============================================================
+2026-08-03 14:59:54,810 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 14:59:54,810 - INFO - ============================================================
+2026-08-03 14:59:54,810 - INFO -   Model Size: yolov8m
+2026-08-03 14:59:54,810 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 14:59:54,810 - INFO -   Epochs: 50
+2026-08-03 14:59:54,810 - INFO -   Batch Size: 4
+2026-08-03 14:59:54,810 - INFO -   Image Size: 4096
+2026-08-03 14:59:54,810 - INFO -   Device: -1
+2026-08-03 14:59:54,810 - INFO -   Early Stopping Patience: 20
+2026-08-03 14:59:54,810 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 14:59:54,810 - INFO - ============================================================
+2026-08-03 14:59:54,810 - INFO - Loading model: yolov8m.pt
+2026-08-03 14:59:54,951 - INFO - Starting training...
+2026-08-03 14:59:57,150 - ERROR - Training failed: [34m[1mtrain: [0mError loading data from C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train
+See https://docs.ultralytics.com/datasets for dataset formatting guidance.
+Traceback (most recent call last):
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 179, in get_img_files
+    assert im_files, f"{self.prefix}No images found in {img_path}. {FORMATS_HELP_MSG}"
+           ^^^^^^^^
+AssertionError: [34m[1mtrain: [0mNo images found in C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train. Supported formats are:
+images: {'jpeg', 'jp2', 'tif', 'dng', 'bmp', 'heif', 'png', 'jpg', 'avif', 'tiff', 'webp', 'heic', 'mpo'}
+videos: {'gif', 'avi', 'mp4', 'webm', 'wmv', 'mpeg', 'mpg', 'asf', 'mkv', 'm4v', 'ts', 'mov'}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 152, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 390, in _do_train
+    self._setup_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 369, in _setup_train
+    self._build_train_pipeline()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 267, in _build_train_pipeline
+    self.train_loader = self.get_dataloader(
+                        ^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 93, in get_dataloader
+    dataset = self.build_dataset(dataset_path, mode, batch_size)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 77, in build_dataset
+    return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\build.py", line 264, in build_yolo_dataset
+    return dataset(
+           ^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\dataset.py", line 91, in __init__
+    super().__init__(*args, channels=self.data.get("channels", 3), **kwargs)
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 117, in __init__
+    self.im_files = self.get_img_files(self.img_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 181, in get_img_files
+    raise FileNotFoundError(f"{self.prefix}Error loading data from {img_path}\n{HELP_URL}") from e
+FileNotFoundError: [34m[1mtrain: [0mError loading data from C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train
+See https://docs.ultralytics.com/datasets for dataset formatting guidance.
+2026-08-03 14:59:57,162 - ERROR - Fatal error: [34m[1mtrain: [0mError loading data from C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train
+See https://docs.ultralytics.com/datasets for dataset formatting guidance.
+Traceback (most recent call last):
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 179, in get_img_files
+    assert im_files, f"{self.prefix}No images found in {img_path}. {FORMATS_HELP_MSG}"
+           ^^^^^^^^
+AssertionError: [34m[1mtrain: [0mNo images found in C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train. Supported formats are:
+images: {'jpeg', 'jp2', 'tif', 'dng', 'bmp', 'heif', 'png', 'jpg', 'avif', 'tiff', 'webp', 'heic', 'mpo'}
+videos: {'gif', 'avi', 'mp4', 'webm', 'wmv', 'mpeg', 'mpg', 'asf', 'mkv', 'm4v', 'ts', 'mov'}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 359, in main
+    train_result = trainer.train(resume=args.resume)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 152, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 390, in _do_train
+    self._setup_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 369, in _setup_train
+    self._build_train_pipeline()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 267, in _build_train_pipeline
+    self.train_loader = self.get_dataloader(
+                        ^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 93, in get_dataloader
+    dataset = self.build_dataset(dataset_path, mode, batch_size)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 77, in build_dataset
+    return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\build.py", line 264, in build_yolo_dataset
+    return dataset(
+           ^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\dataset.py", line 91, in __init__
+    super().__init__(*args, channels=self.data.get("channels", 3), **kwargs)
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 117, in __init__
+    self.im_files = self.get_img_files(self.img_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 181, in get_img_files
+    raise FileNotFoundError(f"{self.prefix}Error loading data from {img_path}\n{HELP_URL}") from e
+FileNotFoundError: [34m[1mtrain: [0mError loading data from C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train
+See https://docs.ultralytics.com/datasets for dataset formatting guidance.
+2026-08-03 15:04:29,868 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 15:04:29,868 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:04:29,868 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:04:29,868 - INFO - Running full training pipeline...
+2026-08-03 15:04:29,868 - INFO - ============================================================
+2026-08-03 15:04:29,868 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 15:04:29,868 - INFO - ============================================================
+2026-08-03 15:04:29,868 - INFO -   Model Size: yolov8m
+2026-08-03 15:04:29,868 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:04:29,868 - INFO -   Epochs: 50
+2026-08-03 15:04:29,868 - INFO -   Batch Size: 4
+2026-08-03 15:04:29,868 - INFO -   Image Size: 4096
+2026-08-03 15:04:29,868 - INFO -   Device: -1
+2026-08-03 15:04:29,868 - INFO -   Early Stopping Patience: 20
+2026-08-03 15:04:29,868 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:04:29,868 - INFO - ============================================================
+2026-08-03 15:04:29,868 - INFO - Loading model: yolov8m.pt
+2026-08-03 15:04:30,003 - INFO - Starting training...
+2026-08-03 15:04:31,910 - ERROR - Training failed: [34m[1mtrain: [0mError loading data from C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train
+See https://docs.ultralytics.com/datasets for dataset formatting guidance.
+Traceback (most recent call last):
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 179, in get_img_files
+    assert im_files, f"{self.prefix}No images found in {img_path}. {FORMATS_HELP_MSG}"
+           ^^^^^^^^
+AssertionError: [34m[1mtrain: [0mNo images found in C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train. Supported formats are:
+images: {'heic', 'jpg', 'mpo', 'heif', 'jpeg', 'jp2', 'webp', 'tif', 'png', 'dng', 'avif', 'bmp', 'tiff'}
+videos: {'mpg', 'gif', 'mov', 'webm', 'wmv', 'mpeg', 'mkv', 'mp4', 'ts', 'avi', 'asf', 'm4v'}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 152, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 390, in _do_train
+    self._setup_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 369, in _setup_train
+    self._build_train_pipeline()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 267, in _build_train_pipeline
+    self.train_loader = self.get_dataloader(
+                        ^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 93, in get_dataloader
+    dataset = self.build_dataset(dataset_path, mode, batch_size)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 77, in build_dataset
+    return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\build.py", line 264, in build_yolo_dataset
+    return dataset(
+           ^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\dataset.py", line 91, in __init__
+    super().__init__(*args, channels=self.data.get("channels", 3), **kwargs)
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 117, in __init__
+    self.im_files = self.get_img_files(self.img_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 181, in get_img_files
+    raise FileNotFoundError(f"{self.prefix}Error loading data from {img_path}\n{HELP_URL}") from e
+FileNotFoundError: [34m[1mtrain: [0mError loading data from C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train
+See https://docs.ultralytics.com/datasets for dataset formatting guidance.
+2026-08-03 15:04:31,915 - ERROR - Fatal error: [34m[1mtrain: [0mError loading data from C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train
+See https://docs.ultralytics.com/datasets for dataset formatting guidance.
+Traceback (most recent call last):
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 179, in get_img_files
+    assert im_files, f"{self.prefix}No images found in {img_path}. {FORMATS_HELP_MSG}"
+           ^^^^^^^^
+AssertionError: [34m[1mtrain: [0mNo images found in C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train. Supported formats are:
+images: {'heic', 'jpg', 'mpo', 'heif', 'jpeg', 'jp2', 'webp', 'tif', 'png', 'dng', 'avif', 'bmp', 'tiff'}
+videos: {'mpg', 'gif', 'mov', 'webm', 'wmv', 'mpeg', 'mkv', 'mp4', 'ts', 'avi', 'asf', 'm4v'}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 359, in main
+    train_result = trainer.train(resume=args.resume)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 152, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 390, in _do_train
+    self._setup_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 369, in _setup_train
+    self._build_train_pipeline()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 267, in _build_train_pipeline
+    self.train_loader = self.get_dataloader(
+                        ^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 93, in get_dataloader
+    dataset = self.build_dataset(dataset_path, mode, batch_size)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 77, in build_dataset
+    return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\build.py", line 264, in build_yolo_dataset
+    return dataset(
+           ^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\dataset.py", line 91, in __init__
+    super().__init__(*args, channels=self.data.get("channels", 3), **kwargs)
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 117, in __init__
+    self.im_files = self.get_img_files(self.img_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 181, in get_img_files
+    raise FileNotFoundError(f"{self.prefix}Error loading data from {img_path}\n{HELP_URL}") from e
+FileNotFoundError: [34m[1mtrain: [0mError loading data from C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\images\train
+See https://docs.ultralytics.com/datasets for dataset formatting guidance.
+2026-08-03 15:12:50,414 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 15:12:50,414 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:12:50,414 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:12:50,414 - INFO - Running full training pipeline...
+2026-08-03 15:12:50,414 - INFO - ============================================================
+2026-08-03 15:12:50,414 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 15:12:50,414 - INFO - ============================================================
+2026-08-03 15:12:50,414 - INFO -   Model Size: yolov8m
+2026-08-03 15:12:50,414 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:12:50,414 - INFO -   Epochs: 50
+2026-08-03 15:12:50,414 - INFO -   Batch Size: 4
+2026-08-03 15:12:50,414 - INFO -   Image Size: 4096
+2026-08-03 15:12:50,414 - INFO -   Device: -1
+2026-08-03 15:12:50,414 - INFO -   Early Stopping Patience: 20
+2026-08-03 15:12:50,414 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:12:50,414 - INFO - ============================================================
+2026-08-03 15:12:50,414 - INFO - Loading model: yolov8m.pt
+2026-08-03 15:12:50,540 - INFO - Starting training...
+2026-08-03 15:12:58,180 - ERROR - Training failed: Given groups=1, weight of size [48, 3, 3, 3], expected input[4, 4, 4096, 4096] to have 3 channels, but got 4 channels instead
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 152, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 460, in _do_train
+    loss, self.loss_items = self.model(batch)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 153, in forward
+    return self.loss(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 412, in loss
+    preds = self.forward(batch["img"])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 154, in forward
+    return self.predict(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 171, in predict
+    return self._predict_once(x, profile, visualize, embed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 193, in _predict_once
+    x = m(x)  # run
+        ^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\modules\conv.py", line 78, in forward
+    return self.act(self.bn(self.conv(x)))
+                            ^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\conv.py", line 565, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\conv.py", line 560, in _conv_forward
+    return F.conv2d(
+           ^^^^^^^^^
+RuntimeError: Given groups=1, weight of size [48, 3, 3, 3], expected input[4, 4, 4096, 4096] to have 3 channels, but got 4 channels instead
+2026-08-03 15:12:58,180 - ERROR - Fatal error: Given groups=1, weight of size [48, 3, 3, 3], expected input[4, 4, 4096, 4096] to have 3 channels, but got 4 channels instead
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 368, in main
+    train_result = trainer.train(resume=args.resume)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 152, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 460, in _do_train
+    loss, self.loss_items = self.model(batch)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 153, in forward
+    return self.loss(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 412, in loss
+    preds = self.forward(batch["img"])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 154, in forward
+    return self.predict(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 171, in predict
+    return self._predict_once(x, profile, visualize, embed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\tasks.py", line 193, in _predict_once
+    x = m(x)  # run
+        ^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\nn\modules\conv.py", line 78, in forward
+    return self.act(self.bn(self.conv(x)))
+                            ^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\conv.py", line 565, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\nn\modules\conv.py", line 560, in _conv_forward
+    return F.conv2d(
+           ^^^^^^^^^
+RuntimeError: Given groups=1, weight of size [48, 3, 3, 3], expected input[4, 4, 4096, 4096] to have 3 channels, but got 4 channels instead
+2026-08-03 15:16:33,906 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 15:16:33,906 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:16:33,906 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:16:33,906 - INFO - Running full training pipeline...
+2026-08-03 15:16:33,906 - INFO - ============================================================
+2026-08-03 15:16:33,906 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 15:16:33,906 - INFO - ============================================================
+2026-08-03 15:16:33,906 - INFO -   Model Size: yolov8m
+2026-08-03 15:16:33,906 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:16:33,906 - INFO -   Epochs: 50
+2026-08-03 15:16:33,906 - INFO -   Batch Size: 4
+2026-08-03 15:16:33,906 - INFO -   Image Size: 4096
+2026-08-03 15:16:33,906 - INFO -   Device: -1
+2026-08-03 15:16:33,906 - INFO -   Early Stopping Patience: 20
+2026-08-03 15:16:33,906 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:16:33,922 - INFO - ============================================================
+2026-08-03 15:16:34,221 - INFO - Checking train images for channel conversion...
+2026-08-03 15:16:34,331 - INFO - Converting extent_0002.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:36,344 - INFO - Saved converted image as extent_0002.png
+2026-08-03 15:16:36,360 - WARNING - Failed to convert extent_0002.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0002.tif'
+2026-08-03 15:16:36,360 - WARNING - Continuing with original image format...
+2026-08-03 15:16:36,371 - INFO - Converting extent_0003.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:38,341 - INFO - Saved converted image as extent_0003.png
+2026-08-03 15:16:38,356 - WARNING - Failed to convert extent_0003.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0003.tif'
+2026-08-03 15:16:38,356 - WARNING - Continuing with original image format...
+2026-08-03 15:16:38,374 - INFO - Converting extent_0005.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:40,366 - INFO - Saved converted image as extent_0005.png
+2026-08-03 15:16:40,382 - WARNING - Failed to convert extent_0005.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0005.tif'
+2026-08-03 15:16:40,382 - WARNING - Continuing with original image format...
+2026-08-03 15:16:40,382 - INFO - Converting extent_0006.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:42,377 - INFO - Saved converted image as extent_0006.png
+2026-08-03 15:16:42,392 - WARNING - Failed to convert extent_0006.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0006.tif'
+2026-08-03 15:16:42,392 - WARNING - Continuing with original image format...
+2026-08-03 15:16:42,392 - INFO - Converting extent_0007.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:44,339 - INFO - Saved converted image as extent_0007.png
+2026-08-03 15:16:44,355 - WARNING - Failed to convert extent_0007.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0007.tif'
+2026-08-03 15:16:44,355 - WARNING - Continuing with original image format...
+2026-08-03 15:16:44,355 - INFO - Converting extent_0008.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:46,306 - INFO - Saved converted image as extent_0008.png
+2026-08-03 15:16:46,321 - WARNING - Failed to convert extent_0008.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0008.tif'
+2026-08-03 15:16:46,321 - WARNING - Continuing with original image format...
+2026-08-03 15:16:46,321 - INFO - Converting extent_0009.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:48,331 - INFO - Saved converted image as extent_0009.png
+2026-08-03 15:16:48,334 - WARNING - Failed to convert extent_0009.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0009.tif'
+2026-08-03 15:16:48,334 - WARNING - Continuing with original image format...
+2026-08-03 15:16:48,334 - INFO - Checking val images for channel conversion...
+2026-08-03 15:16:48,334 - INFO - Converting extent_0004.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:50,220 - INFO - Saved converted image as extent_0004.png
+2026-08-03 15:16:50,220 - WARNING - Failed to convert extent_0004.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\val\\extent_0004.tif'
+2026-08-03 15:16:50,220 - WARNING - Continuing with original image format...
+2026-08-03 15:16:50,234 - INFO - Checking test images for channel conversion...
+2026-08-03 15:16:50,244 - INFO - Converting extent_0000.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:52,183 - INFO - Saved converted image as extent_0000.png
+2026-08-03 15:16:52,183 - WARNING - Failed to convert extent_0000.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\test\\extent_0000.tif'
+2026-08-03 15:16:52,183 - WARNING - Continuing with original image format...
+2026-08-03 15:16:52,206 - INFO - Converting extent_0001.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:16:53,992 - INFO - Saved converted image as extent_0001.png
+2026-08-03 15:16:54,008 - WARNING - Failed to convert extent_0001.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\test\\extent_0001.tif'
+2026-08-03 15:16:54,008 - WARNING - Continuing with original image format...
+2026-08-03 15:16:54,008 - INFO - Loading model: yolov8m.pt
+2026-08-03 15:16:54,118 - INFO - Starting training...
+2026-08-03 15:16:59,290 - ERROR - Training failed: could not broadcast input array from shape (2885,3881,4) into shape (2885,3881,3)
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 234, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 431, in _do_train
+    for i, batch in pbar:
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\utils\tqdm.py", line 350, in __iter__
+    for item in self.iterable:
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\build.py", line 83, in __iter__
+    yield next(self.iterator)
+          ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\dataloader.py", line 725, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\dataloader.py", line 785, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 54, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 54, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 397, in __getitem__
+    return self.transforms(self.get_image_and_label(index))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 158, in __call__
+    data = t(data)
+           ^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 158, in __call__
+    data = t(data)
+           ^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 332, in __call__
+    labels = self.apply_image(labels, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 603, in apply_image
+    img4[y1a:y2a, x1a:x2a] = img[y1b:y2b, x1b:x2b]
+    ~~~~^^^^^^^^^^^^^^^^^^
+ValueError: could not broadcast input array from shape (2885,3881,4) into shape (2885,3881,3)
+2026-08-03 15:16:59,290 - ERROR - Fatal error: could not broadcast input array from shape (2885,3881,4) into shape (2885,3881,3)
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 450, in main
+    train_result = trainer.train(resume=args.resume)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 234, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 431, in _do_train
+    for i, batch in pbar:
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\utils\tqdm.py", line 350, in __iter__
+    for item in self.iterable:
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\build.py", line 83, in __iter__
+    yield next(self.iterator)
+          ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\dataloader.py", line 725, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\dataloader.py", line 785, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 54, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 54, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 397, in __getitem__
+    return self.transforms(self.get_image_and_label(index))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 158, in __call__
+    data = t(data)
+           ^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 158, in __call__
+    data = t(data)
+           ^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 332, in __call__
+    labels = self.apply_image(labels, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 603, in apply_image
+    img4[y1a:y2a, x1a:x2a] = img[y1b:y2b, x1b:x2b]
+    ~~~~^^^^^^^^^^^^^^^^^^
+ValueError: could not broadcast input array from shape (2885,3881,4) into shape (2885,3881,3)
+2026-08-03 15:20:25,212 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 15:20:25,212 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:20:25,212 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:20:25,212 - INFO - Running full training pipeline...
+2026-08-03 15:20:25,212 - INFO - ============================================================
+2026-08-03 15:20:25,212 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 15:20:25,212 - INFO - ============================================================
+2026-08-03 15:20:25,212 - INFO -   Model Size: yolov8m
+2026-08-03 15:20:25,212 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:20:25,212 - INFO -   Epochs: 50
+2026-08-03 15:20:25,212 - INFO -   Batch Size: 4
+2026-08-03 15:20:25,212 - INFO -   Image Size: 4096
+2026-08-03 15:20:25,212 - INFO -   Device: -1
+2026-08-03 15:20:25,212 - INFO -   Early Stopping Patience: 20
+2026-08-03 15:20:25,212 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:20:25,212 - INFO - ============================================================
+2026-08-03 15:20:25,416 - INFO - Checking train images for channel conversion...
+2026-08-03 15:20:25,447 - INFO - Converting extent_0002.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:27,600 - INFO - Saved converted image as extent_0002.png
+2026-08-03 15:20:27,616 - WARNING - Failed to convert extent_0002.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0002.tif'
+2026-08-03 15:20:27,616 - WARNING - Continuing with original image format...
+2026-08-03 15:20:27,616 - INFO - Converting extent_0003.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:29,644 - INFO - Saved converted image as extent_0003.png
+2026-08-03 15:20:29,644 - WARNING - Failed to convert extent_0003.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0003.tif'
+2026-08-03 15:20:29,644 - WARNING - Continuing with original image format...
+2026-08-03 15:20:29,660 - INFO - Converting extent_0005.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:31,706 - INFO - Saved converted image as extent_0005.png
+2026-08-03 15:20:31,722 - WARNING - Failed to convert extent_0005.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0005.tif'
+2026-08-03 15:20:31,722 - WARNING - Continuing with original image format...
+2026-08-03 15:20:31,722 - INFO - Converting extent_0006.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:33,672 - INFO - Saved converted image as extent_0006.png
+2026-08-03 15:20:33,687 - WARNING - Failed to convert extent_0006.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0006.tif'
+2026-08-03 15:20:33,687 - WARNING - Continuing with original image format...
+2026-08-03 15:20:33,687 - INFO - Converting extent_0007.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:35,698 - INFO - Saved converted image as extent_0007.png
+2026-08-03 15:20:35,698 - WARNING - Failed to convert extent_0007.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0007.tif'
+2026-08-03 15:20:35,698 - WARNING - Continuing with original image format...
+2026-08-03 15:20:35,714 - INFO - Converting extent_0008.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:37,711 - INFO - Saved converted image as extent_0008.png
+2026-08-03 15:20:37,716 - WARNING - Failed to convert extent_0008.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0008.tif'
+2026-08-03 15:20:37,716 - WARNING - Continuing with original image format...
+2026-08-03 15:20:37,727 - INFO - Converting extent_0009.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:39,692 - INFO - Saved converted image as extent_0009.png
+2026-08-03 15:20:39,692 - WARNING - Failed to convert extent_0009.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\train\\extent_0009.tif'
+2026-08-03 15:20:39,692 - WARNING - Continuing with original image format...
+2026-08-03 15:20:39,692 - INFO - Checking val images for channel conversion...
+2026-08-03 15:20:39,692 - INFO - Converting extent_0004.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:41,577 - INFO - Saved converted image as extent_0004.png
+2026-08-03 15:20:41,592 - WARNING - Failed to convert extent_0004.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\val\\extent_0004.tif'
+2026-08-03 15:20:41,592 - WARNING - Continuing with original image format...
+2026-08-03 15:20:41,592 - INFO - Checking test images for channel conversion...
+2026-08-03 15:20:41,592 - INFO - Converting extent_0000.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:43,525 - INFO - Saved converted image as extent_0000.png
+2026-08-03 15:20:43,541 - WARNING - Failed to convert extent_0000.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\test\\extent_0000.tif'
+2026-08-03 15:20:43,541 - WARNING - Continuing with original image format...
+2026-08-03 15:20:43,541 - INFO - Converting extent_0001.tif from 4 channels to 3-channel RGB...
+2026-08-03 15:20:45,398 - INFO - Saved converted image as extent_0001.png
+2026-08-03 15:20:45,398 - WARNING - Failed to convert extent_0001.tif: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\gonzalo.echeverria\\BILBOMATICA\\TASK\\Segmentation-1\\dataset\\yolo_buildings\\images\\test\\extent_0001.tif'
+2026-08-03 15:20:45,398 - WARNING - Continuing with original image format...
+2026-08-03 15:20:45,411 - INFO - Loading model: yolov8m.pt
+2026-08-03 15:20:45,600 - INFO - Starting training...
+2026-08-03 15:20:50,270 - ERROR - Training failed: could not broadcast input array from shape (2885,3881,4) into shape (2885,3881,3)
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 234, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 431, in _do_train
+    for i, batch in pbar:
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\utils\tqdm.py", line 350, in __iter__
+    for item in self.iterable:
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\build.py", line 83, in __iter__
+    yield next(self.iterator)
+          ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\dataloader.py", line 725, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\dataloader.py", line 785, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 54, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 54, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 397, in __getitem__
+    return self.transforms(self.get_image_and_label(index))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 158, in __call__
+    data = t(data)
+           ^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 158, in __call__
+    data = t(data)
+           ^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 332, in __call__
+    labels = self.apply_image(labels, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 603, in apply_image
+    img4[y1a:y2a, x1a:x2a] = img[y1b:y2b, x1b:x2b]
+    ~~~~^^^^^^^^^^^^^^^^^^
+ValueError: could not broadcast input array from shape (2885,3881,4) into shape (2885,3881,3)
+2026-08-03 15:20:50,270 - ERROR - Fatal error: could not broadcast input array from shape (2885,3881,4) into shape (2885,3881,3)
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 450, in main
+    train_result = trainer.train(resume=args.resume)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 234, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 815, in train
+    self.trainer.train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 241, in train
+    self._do_train()
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 431, in _do_train
+    for i, batch in pbar:
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\utils\tqdm.py", line 350, in __iter__
+    for item in self.iterable:
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\build.py", line 83, in __iter__
+    yield next(self.iterator)
+          ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\dataloader.py", line 725, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\dataloader.py", line 785, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 54, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 54, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\base.py", line 397, in __getitem__
+    return self.transforms(self.get_image_and_label(index))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 158, in __call__
+    data = t(data)
+           ^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 158, in __call__
+    data = t(data)
+           ^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 332, in __call__
+    labels = self.apply_image(labels, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\data\augment.py", line 603, in apply_image
+    img4[y1a:y2a, x1a:x2a] = img[y1b:y2b, x1b:x2b]
+    ~~~~^^^^^^^^^^^^^^^^^^
+ValueError: could not broadcast input array from shape (2885,3881,4) into shape (2885,3881,3)
+2026-08-03 15:23:24,458 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 15:23:24,458 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:23:24,458 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:23:24,458 - INFO - Running full training pipeline...
+2026-08-03 15:23:24,458 - INFO - ============================================================
+2026-08-03 15:23:24,458 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 15:23:24,458 - INFO - ============================================================
+2026-08-03 15:23:24,458 - INFO -   Model Size: yolov8m
+2026-08-03 15:23:24,458 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 15:23:24,458 - INFO -   Epochs: 50
+2026-08-03 15:23:24,458 - INFO -   Batch Size: 4
+2026-08-03 15:23:24,458 - INFO -   Image Size: 4096
+2026-08-03 15:23:24,458 - INFO -   Device: -1
+2026-08-03 15:23:24,458 - INFO -   Early Stopping Patience: 20
+2026-08-03 15:23:24,458 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 15:23:24,458 - INFO - ============================================================
+2026-08-03 15:23:24,626 - INFO - Checking train images for channel conversion...
+2026-08-03 15:23:24,626 - INFO - No TIFF files found in train
+2026-08-03 15:23:24,626 - INFO - Checking val images for channel conversion...
+2026-08-03 15:23:24,642 - INFO - No TIFF files found in val
+2026-08-03 15:23:24,642 - INFO - Checking test images for channel conversion...
+2026-08-03 15:23:24,642 - INFO - No TIFF files found in test
+2026-08-03 15:23:24,642 - INFO - Loading model: yolov8m.pt
+2026-08-03 15:23:24,721 - INFO - Starting training...
+2026-08-03 16:18:27,232 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 16:18:27,232 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 16:18:27,248 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 16:18:27,248 - INFO - Running full training pipeline...
+2026-08-03 16:18:27,249 - INFO - ============================================================
+2026-08-03 16:18:27,249 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 16:18:27,249 - INFO - ============================================================
+2026-08-03 16:18:27,249 - INFO -   Model Size: yolov8m
+2026-08-03 16:18:27,249 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 16:18:27,249 - INFO -   Epochs: 50
+2026-08-03 16:18:27,249 - INFO -   Batch Size: 4
+2026-08-03 16:18:27,249 - INFO -   Image Size: 4096
+2026-08-03 16:18:27,249 - INFO -   Device: -1
+2026-08-03 16:18:27,249 - INFO -   Early Stopping Patience: 20
+2026-08-03 16:18:27,249 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 16:18:27,249 - INFO - ============================================================
+2026-08-03 16:18:27,691 - INFO - Checking train images for channel conversion...
+2026-08-03 16:18:27,706 - INFO - No TIFF files found in train
+2026-08-03 16:18:27,706 - INFO - Checking val images for channel conversion...
+2026-08-03 16:18:27,706 - INFO - No TIFF files found in val
+2026-08-03 16:18:27,706 - INFO - Checking test images for channel conversion...
+2026-08-03 16:18:27,706 - INFO - No TIFF files found in test
+2026-08-03 16:18:27,706 - INFO - Loading model: yolov8m.pt
+2026-08-03 16:18:28,039 - INFO - Starting training...
+2026-08-03 16:59:08,445 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-03 16:59:08,445 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 16:59:08,449 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 16:59:08,449 - INFO - Running full training pipeline...
+2026-08-03 16:59:08,449 - INFO - ============================================================
+2026-08-03 16:59:08,449 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 16:59:08,449 - INFO - ============================================================
+2026-08-03 16:59:08,449 - INFO -   Model Size: yolov8m
+2026-08-03 16:59:08,449 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 16:59:08,449 - INFO -   Epochs: 50
+2026-08-03 16:59:08,449 - INFO -   Batch Size: 4
+2026-08-03 16:59:08,449 - INFO -   Image Size: 4096
+2026-08-03 16:59:08,449 - INFO -   Device: -1
+2026-08-03 16:59:08,449 - INFO -   Early Stopping Patience: 20
+2026-08-03 16:59:08,449 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 16:59:08,449 - INFO - ============================================================
+2026-08-03 16:59:08,963 - INFO - Checking train images for channel conversion...
+2026-08-03 16:59:08,963 - INFO - No TIFF files found in train
+2026-08-03 16:59:08,963 - INFO - Checking val images for channel conversion...
+2026-08-03 16:59:08,979 - INFO - No TIFF files found in val
+2026-08-03 16:59:08,979 - INFO - Checking test images for channel conversion...
+2026-08-03 16:59:08,979 - INFO - No TIFF files found in test
+2026-08-03 16:59:08,979 - INFO - Loading model: yolov8m.pt
+2026-08-03 16:59:09,168 - INFO - Starting training...
+2026-08-03 17:13:11,470 - INFO - Initialized YOLOTrainer with model size: n
+2026-08-03 17:13:11,470 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 17:13:11,470 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 17:13:11,470 - INFO - Running full training pipeline...
+2026-08-03 17:13:11,470 - INFO - ============================================================
+2026-08-03 17:13:11,470 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-03 17:13:11,470 - INFO - ============================================================
+2026-08-03 17:13:11,470 - INFO -   Model Size: yolov8n
+2026-08-03 17:13:11,470 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-03 17:13:11,470 - INFO -   Epochs: 5
+2026-08-03 17:13:11,470 - INFO -   Batch Size: 1
+2026-08-03 17:13:11,470 - INFO -   Image Size: 512
+2026-08-03 17:13:11,470 - INFO -   Device: -1
+2026-08-03 17:13:11,470 - INFO -   Early Stopping Patience: 20
+2026-08-03 17:13:11,470 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-03 17:13:11,470 - INFO - ============================================================
+2026-08-03 17:13:11,847 - INFO - Checking train images for channel conversion...
+2026-08-03 17:13:11,847 - INFO - No TIFF files found in train
+2026-08-03 17:13:11,847 - INFO - Checking val images for channel conversion...
+2026-08-03 17:13:11,847 - INFO - No TIFF files found in val
+2026-08-03 17:13:11,847 - INFO - Checking test images for channel conversion...
+2026-08-03 17:13:11,847 - INFO - No TIFF files found in test
+2026-08-03 17:13:11,847 - INFO - Loading model: yolov8n.pt
+2026-08-03 17:13:13,152 - INFO - Starting training...
+2026-08-03 17:13:43,779 - INFO - Training completed successfully!
+2026-08-03 17:13:43,779 - INFO - Best model saved to: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs\train_yolov8n_20260803_171313/weights/best.pt
+2026-08-03 17:13:43,779 - INFO - Last model saved to: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs\train_yolov8n_20260803_171313/weights/last.pt
+2026-08-03 17:13:43,779 - INFO - 
+Validating best model...
+2026-08-03 17:13:43,779 - INFO - Validating model: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs\train_yolov8n_20260803_171313\weights\best.pt
+2026-08-03 17:13:45,633 - INFO - Validation completed successfully!
+2026-08-03 17:13:45,633 - INFO - 
+Testing on test set...
+2026-08-03 17:13:45,633 - INFO - Testing model: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs\train_yolov8n_20260803_171313\weights\best.pt
+2026-08-03 17:13:47,831 - INFO - Testing completed successfully!
+2026-08-03 17:13:47,847 - INFO - 
+============================================================
+2026-08-03 17:13:47,847 - INFO - TRAINING COMPLETE
+2026-08-03 17:13:47,847 - INFO - ============================================================
+2026-08-03 17:13:47,847 - INFO - Best model: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs\train_yolov8n_20260803_171313\weights\best.pt
+2026-08-03 17:13:47,847 - INFO - Results saved to: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs\train_yolov8n_20260803_171313
+2026-08-03 17:13:47,847 - INFO - ============================================================

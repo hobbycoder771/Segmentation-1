@@ -9,6 +9,8 @@ Usage:
     python run_yolo_pipeline.py --full
     python run_yolo_pipeline.py --limit 5 --split
     python run_yolo_pipeline.py --test --no-vector-clipping
+    python run_yolo_pipeline.py --test --enable-tiling --tile-size 512
+    python run_yolo_pipeline.py --full --enable-tiling --tile-size 640
 """
 
 import argparse
@@ -25,98 +27,120 @@ def main():
 Examples:
   python run_yolo_pipeline.py --test
     Test mode: 3 extents, imagery + vector clipping, no splitting
-  
+
   python run_yolo_pipeline.py --full
     Full mode: all extents, imagery + vector clipping, train/val/test split
-  
+
   python run_yolo_pipeline.py --limit 10 --split
     Process 10 extents with imagery + vector clipping and splitting
-  
+
   python run_yolo_pipeline.py --test --no-vector-clipping
     Test mode without vector clipping (imagery only)
-  
-  python run_yolo_pipeline.py --limit 5 --carto-output-path ./custom_carto
-    Custom output path for vector data
-        """
+
+   python run_yolo_pipeline.py --limit 5 --carto-output-path ./custom_carto
+     Custom output path for vector data
+
+  python run_yolo_pipeline.py --test --enable-tiling --tile-size 512
+     Test mode with tiling: 3 extents split into 512×512 tiles
+
+  python run_yolo_pipeline.py --full --enable-tiling --tile-size 640 --tile-overlap 64
+     Full mode with overlapping tiles (640×640 with 64px overlap)
+        """,
     )
-    
+
     parser.add_argument(
         "--extents-layer",
         default="extent",
-        help="Layer name for extents in geopackage (default: extent)"
+        help="Layer name for extents in geopackage (default: extent)",
     )
     parser.add_argument(
         "--buildings-layer",
         default="buildings",
-        help="Layer name for buildings in geopackage (default: buildings)"
+        help="Layer name for buildings in geopackage (default: buildings)",
     )
     parser.add_argument(
         "--imagery-url",
         default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/ORTO_EJ_2024/MapServer/export",
-        help="ArcGIS MapServer export URL"
+        help="ArcGIS MapServer export URL",
     )
     parser.add_argument(
         "--image-size",
         type=int,
         default=4096,
-        help="Size of downloaded imagery (square, default: 4096)"
+        help="Size of downloaded imagery (square, default: 4096)",
     )
     parser.add_argument(
         "--output-dir",
         default="../../dataset/yolo_buildings",
-        help="Output directory for YOLO dataset"
+        help="Output directory for YOLO dataset",
     )
     parser.add_argument(
         "--limit",
         type=int,
         default=None,
-        help="Limit number of extents to process (for testing)"
+        help="Limit number of extents to process (for testing)",
     )
     parser.add_argument(
-        "--split",
-        action="store_true",
-        help="Split dataset into train/val/test"
+        "--split", action="store_true", help="Split dataset into train/val/test"
     )
     parser.add_argument(
         "--test",
         action="store_true",
-        help="Test mode: process 3 extents without splitting"
+        help="Test mode: process 3 extents without splitting",
     )
     parser.add_argument(
         "--full",
         action="store_true",
-        help="Full mode: process all extents with splitting"
+        help="Full mode: process all extents with splitting",
     )
     parser.add_argument(
         "--train-ratio",
         type=float,
         default=0.7,
-        help="Training set ratio (default: 0.7)"
+        help="Training set ratio (default: 0.7)",
     )
     parser.add_argument(
         "--val-ratio",
         type=float,
         default=0.15,
-        help="Validation set ratio (default: 0.15)"
+        help="Validation set ratio (default: 0.15)",
     )
     parser.add_argument(
         "--feature-server-url",
         default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/Kartografia_BTB_Kartografia_5000/FeatureServer/16/query",
-        help="ArcGIS FeatureServer URL for vector data clipping"
+        help="ArcGIS FeatureServer URL for vector data clipping",
     )
     parser.add_argument(
         "--carto-output-path",
         default="../../data/vector/carto",
-        help="Output path for clipped vector data (geopackage)"
+        help="Output path for clipped vector data (geopackage)",
     )
     parser.add_argument(
         "--no-vector-clipping",
         action="store_true",
-        help="Disable vector data clipping from FeatureServer"
+        help="Disable vector data clipping from FeatureServer",
     )
-    
+    parser.add_argument(
+        "--enable-tiling",
+        action="store_true",
+        help="Enable tiling of large images into smaller tiles",
+    )
+    parser.add_argument(
+        "--tile-size",
+        type=int,
+        default=512,
+        choices=[256, 512, 640, 768, 1024],
+        help="Tile size for image tiling (default: 512)",
+    )
+    parser.add_argument(
+        "--tile-overlap",
+        type=int,
+        default=0,
+        help="Overlap between tiles in pixels (default: 0, no overlap)",
+    )
+
     args = parser.parse_args()
-    
+
     # Handle preset modes
     if args.test:
         args.limit = 3
@@ -126,31 +150,33 @@ Examples:
         args.limit = None
         args.split = True
         print("Running in FULL mode (all extents, with splitting)")
-    
+
     # Validate ratios
     if args.train_ratio + args.val_ratio >= 1.0:
-        print(f"Error: train_ratio ({args.train_ratio}) + val_ratio ({args.val_ratio}) must be < 1.0")
+        print(
+            f"Error: train_ratio ({args.train_ratio}) + val_ratio ({args.val_ratio}) must be < 1.0"
+        )
         sys.exit(1)
-    
+
     # Get paths relative to script location
     script_dir = Path(__file__).parent
     project_root = script_dir.parent.parent
-    
+
     extents_gpkg = project_root / "data" / "vector" / "extents" / "extent.gpkg"
     buildings_gpkg = project_root / "data" / "vector" / "carto" / "karto.gpkg"
-    
+
     # Check files exist
     if not extents_gpkg.exists():
         print(f"Error: Extents geopackage not found: {extents_gpkg}")
         sys.exit(1)
-    
+
     if not buildings_gpkg.exists():
         print(f"Error: Buildings geopackage not found: {buildings_gpkg}")
         sys.exit(1)
-    
-    print("\n" + "="*70)
+
+    print("\n" + "=" * 70)
     print("YOLO Building Detection Dataset Builder")
-    print("="*70)
+    print("=" * 70)
     print(f"\nConfiguration:")
     print(f"  Extents layer: {args.extents_layer}")
     print(f"  Buildings layer: {args.buildings_layer}")
@@ -158,18 +184,26 @@ Examples:
     print(f"  Limit: {args.limit if args.limit else 'All extents'}")
     print(f"  Split: {args.split}")
     if args.split:
-        print(f"  Train/Val/Test ratio: {args.train_ratio:.1%}/{args.val_ratio:.1%}/{1-args.train_ratio-args.val_ratio:.1%}")
+        print(
+            f"  Train/Val/Test ratio: {args.train_ratio:.1%}/{args.val_ratio:.1%}/{1-args.train_ratio-args.val_ratio:.1%}"
+        )
     print(f"  Vector clipping: {'Disabled' if args.no_vector_clipping else 'Enabled'}")
     if not args.no_vector_clipping:
         print(f"  Carto output: {args.carto_output_path}")
+    print(f"  Tiling: {'Enabled' if args.enable_tiling else 'Disabled'}")
+    if args.enable_tiling:
+        print(f"    Tile size: {args.tile_size}×{args.tile_size}")
+        print(f"    Tile overlap: {args.tile_overlap}px")
     print(f"  Output: {args.output_dir}")
     print()
-    
+
     try:
         # Prepare feature server URL (only if vector clipping is enabled)
-        feature_server_url = None if args.no_vector_clipping else args.feature_server_url
+        feature_server_url = (
+            None if args.no_vector_clipping else args.feature_server_url
+        )
         carto_output_path = None if args.no_vector_clipping else args.carto_output_path
-        
+
         builder = YOLODataBuilder(
             imagery_url=args.imagery_url,
             extents_gpkg_path=str(extents_gpkg),
@@ -180,30 +214,38 @@ Examples:
             image_size=args.image_size,
             crs="EPSG:3857",
             feature_server_url=feature_server_url,
-            carto_output_path=carto_output_path
+            carto_output_path=carto_output_path,
+            enable_tiling=args.enable_tiling,
+            tile_size=args.tile_size,
+            tile_overlap=args.tile_overlap,
         )
-        
+
         # Run pipeline with custom split ratios if provided
         if args.split:
             builder.run_pipeline(limit=args.limit, split=False)
             # Now split with custom ratios
-            builder.split_dataset(train_ratio=args.train_ratio, val_ratio=args.val_ratio)
-            builder.create_dataset_yaml(train_ratio=args.train_ratio, val_ratio=args.val_ratio)
+            builder.split_dataset(
+                train_ratio=args.train_ratio, val_ratio=args.val_ratio
+            )
+            builder.create_dataset_yaml(
+                train_ratio=args.train_ratio, val_ratio=args.val_ratio
+            )
         else:
             builder.run_pipeline(limit=args.limit, split=False)
-        
-        print("\n" + "="*70)
+
+        print("\n" + "=" * 70)
         print("Pipeline completed successfully!")
-        print("="*70)
-        
+        print("=" * 70)
+
         if args.split:
             print(f"\nDataset ready for training at: {args.output_dir}")
             print(f"Use this data.yaml for YOLOv8 training:")
             print(f"  data: {Path(args.output_dir).absolute()}/data.yaml")
-        
+
     except Exception as e:
         print(f"\nError: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 

@@ -45,6 +45,9 @@ class YOLODataBuilder:
         crs="EPSG:3857",
         feature_server_url=None,
         carto_output_path=None,
+        enable_tiling=False,
+        tile_size=512,
+        tile_overlap=0,
     ):
         """
         Initialize YOLO Data Builder.
@@ -71,6 +74,12 @@ class YOLODataBuilder:
             ArcGIS FeatureServer URL for vector data clipping
         carto_output_path : str, optional
             Output path for clipped vector data (geopackage)
+        enable_tiling : bool
+            Whether to tile large images into smaller tiles
+        tile_size : int
+            Size of tiles when tiling is enabled (e.g., 512, 640)
+        tile_overlap : int
+            Overlap between tiles in pixels (default: 0)
         """
         self.imagery_url = imagery_url
         self.extents_gpkg = extents_gpkg_path
@@ -82,6 +91,9 @@ class YOLODataBuilder:
         self.crs = crs
         self.feature_server_url = feature_server_url
         self.carto_output_path = carto_output_path
+        self.enable_tiling = enable_tiling
+        self.tile_size = tile_size
+        self.tile_overlap = tile_overlap
 
         # Setup output directories
         self.images_dir = self.output_dir / "images"
@@ -90,6 +102,7 @@ class YOLODataBuilder:
         # Initialize data storage
         self.extents_gdf = None
         self.buildings_gdf = None
+        self.tile_counter = 0  # Global counter for unique tile IDs
 
     def setup_directories(self):
         """Create necessary output directories."""
@@ -100,7 +113,19 @@ class YOLODataBuilder:
 
     def load_data(self):
         """Load extents and buildings from geopackages."""
-        import fiona
+        
+        def get_layer_names(gpkg_path):
+            """Get available layers in a geopackage using pyogrio."""
+            try:
+                import pyogrio
+                return pyogrio.list_layers(gpkg_path)[:,0].tolist()
+            except:
+                # Fallback: try reading with geopandas and catching the warning
+                try:
+                    gpd.read_file(gpkg_path)
+                    return ['buildings']
+                except:
+                    return []
 
         logger.info("Loading extents from geopackage...")
         self.extents_gdf = gpd.read_file(self.extents_gpkg, layer=self.extents_layer)
@@ -125,7 +150,7 @@ class YOLODataBuilder:
 
             try:
                 # Get all available layers
-                available_layers = fiona.listlayers(self.buildings_gpkg)
+                available_layers = get_layer_names(self.buildings_gpkg)
                 logger.info(f"Available layers in geopackage: {available_layers}")
 
                 # Load all layers that contain the pattern (or all if pattern is generic)
@@ -274,6 +299,220 @@ class YOLODataBuilder:
 
         with rasterio.open(output_tif, "w", **profile) as dst:
             dst.write(image)
+
+    def tile_image(self, geotiff_path, extent_id):
+        """
+        Split a large GeoTIFF into smaller tiles.
+
+        Parameters
+        ----------
+        geotiff_path : str
+            Path to the input GeoTIFF
+        extent_id : int
+            Unique identifier for the extent
+
+        Returns
+        -------
+        list of str
+            Paths to the created tile GeoTIFFs
+        """
+        try:
+            with rasterio.open(geotiff_path) as src:
+                image = src.read()
+                profile = src.profile
+                transform = src.transform
+                image_width = src.width
+                image_height = src.height
+
+            tile_paths = []
+            stride = self.tile_size - self.tile_overlap
+
+            # Calculate number of tiles
+            tiles_x = (image_width - self.tile_overlap + stride - 1) // stride
+            tiles_y = (image_height - self.tile_overlap + stride - 1) // stride
+
+            logger.info(
+                f"Tiling extent {extent_id}: {tiles_x}×{tiles_y} tiles "
+                f"({self.tile_size}×{self.tile_size})"
+            )
+
+            tile_id = 0
+            for ty in range(tiles_y):
+                for tx in range(tiles_x):
+                    # Calculate tile boundaries
+                    col_start = tx * stride
+                    row_start = ty * stride
+                    col_end = min(col_start + self.tile_size, image_width)
+                    row_end = min(row_start + self.tile_size, image_height)
+
+                    # Extract tile
+                    tile_image = image[
+                        :, row_start:row_end, col_start:col_end
+                    ]
+
+                    # Calculate geospatial bounds for this tile
+                    tile_transform = rasterio.transform.Affine(
+                        transform.a,
+                        transform.b,
+                        transform.c + col_start * transform.a,
+                        transform.d,
+                        transform.e,
+                        transform.f + row_start * transform.e,
+                    )
+
+                    # Update profile for tile
+                    tile_profile = profile.copy()
+                    tile_profile.update(
+                        width=tile_image.shape[2],
+                        height=tile_image.shape[1],
+                        transform=tile_transform,
+                    )
+
+                    # Save tile
+                    tile_path = (
+                        self.images_dir
+                        / f"extent_{extent_id:04d}_tile_{tile_id:03d}.tif"
+                    )
+                    with rasterio.open(tile_path, "w", **tile_profile) as dst:
+                        dst.write(tile_image)
+
+                    tile_paths.append(str(tile_path))
+                    tile_id += 1
+
+            logger.info(
+                f"Created {len(tile_paths)} tiles for extent {extent_id}"
+            )
+            return tile_paths
+
+        except Exception as e:
+            logger.error(f"Failed to tile image for extent {extent_id}: {e}")
+            return []
+
+    def tile_annotations(self, annotations, geotiff_path, extent_id):
+        """
+        Split YOLO annotations to match tiled images.
+
+        Parameters
+        ----------
+        annotations : list of str
+            YOLO format annotations from the original image
+        geotiff_path : str
+            Path to the original GeoTIFF
+        extent_id : int
+            Unique identifier for the extent
+
+        Returns
+        -------
+        dict
+            Mapping of tile paths to their annotations
+        """
+        try:
+            with rasterio.open(geotiff_path) as src:
+                image_width = src.width
+                image_height = src.height
+
+            tile_annotations = {}
+            stride = self.tile_size - self.tile_overlap
+
+            # Parse annotations
+            parsed_annotations = []
+            for ann in annotations:
+                parts = ann.split()
+                class_id = int(parts[0])
+                x_center = float(parts[1])
+                y_center = float(parts[2])
+                width = float(parts[3])
+                height = float(parts[4])
+                parsed_annotations.append(
+                    (class_id, x_center, y_center, width, height)
+                )
+
+            # Calculate number of tiles
+            tiles_x = (image_width - self.tile_overlap + stride - 1) // stride
+            tiles_y = (image_height - self.tile_overlap + stride - 1) // stride
+
+            tile_id = 0
+            for ty in range(tiles_y):
+                for tx in range(tiles_x):
+                    # Calculate tile boundaries in pixel coordinates
+                    col_start = tx * stride
+                    row_start = ty * stride
+                    col_end = min(col_start + self.tile_size, image_width)
+                    row_end = min(row_start + self.tile_size, image_height)
+
+                    tile_width = col_end - col_start
+                    tile_height = row_end - row_start
+
+                    # Find annotations that intersect this tile
+                    tile_anns = []
+                    for class_id, x_center, y_center, width, height in parsed_annotations:
+                        # Convert normalized coordinates to pixel coordinates
+                        px_center = x_center * image_width
+                        py_center = y_center * image_height
+                        px_width = width * image_width
+                        px_height = height * image_height
+
+                        # Check intersection with tile
+                        left = px_center - px_width / 2
+                        right = px_center + px_width / 2
+                        top = py_center - px_height / 2
+                        bottom = py_center + px_height / 2
+
+                        # Check if bounding box intersects tile
+                        if (
+                            right > col_start
+                            and left < col_end
+                            and bottom > row_start
+                            and top < row_end
+                        ):
+                            # Clip bounding box to tile boundaries
+                            clipped_left = max(left, col_start)
+                            clipped_right = min(right, col_end)
+                            clipped_top = max(top, row_start)
+                            clipped_bottom = min(bottom, row_end)
+
+                            # Convert back to normalized coordinates relative to tile
+                            new_x_center = (
+                                (clipped_left + clipped_right) / 2 - col_start
+                            ) / tile_width
+                            new_y_center = (
+                                (clipped_top + clipped_bottom) / 2 - row_start
+                            ) / tile_height
+                            new_width = (
+                                (clipped_right - clipped_left) / tile_width
+                            )
+                            new_height = (
+                                (clipped_bottom - clipped_top) / tile_height
+                            )
+
+                            # Only include if bounding box has meaningful size
+                            if new_width > 0.01 and new_height > 0.01:
+                                # Clip to [0, 1]
+                                new_x_center = np.clip(new_x_center, 0, 1)
+                                new_y_center = np.clip(new_y_center, 0, 1)
+                                new_width = np.clip(new_width, 0, 1)
+                                new_height = np.clip(new_height, 0, 1)
+
+                                tile_anns.append(
+                                    f"{class_id} {new_x_center:.6f} {new_y_center:.6f} "
+                                    f"{new_width:.6f} {new_height:.6f}"
+                                )
+
+                    # Store annotations for this tile
+                    tile_path = f"extent_{extent_id:04d}_tile_{tile_id:03d}"
+                    if tile_anns:
+                        tile_annotations[tile_path] = tile_anns
+
+                    tile_id += 1
+
+            logger.info(
+                f"Created annotations for {len(tile_annotations)} tiles in extent {extent_id}"
+            )
+            return tile_annotations
+
+        except Exception as e:
+            logger.error(f"Failed to tile annotations for extent {extent_id}: {e}")
+            return {}
 
     def clip_feature_server_by_extent(
         self, extent, out_name, extent_id
@@ -515,12 +754,65 @@ class YOLODataBuilder:
                 )
 
                 if label_path:
+                    # Handle tiling if enabled
+                    if self.enable_tiling:
+                        self._process_tiling(geotiff_path, label_path, extent_id)
                     successful += 1
             else:
                 logger.info(f"No buildings data available for extent {extent_id}, skipping annotations")
+                # Handle tiling even without annotations
+                if self.enable_tiling:
+                    self._process_tiling(geotiff_path, None, extent_id)
                 successful += 1  # Count imagery download as successful
 
         logger.info(f"Successfully processed {successful}/{len(extents)} extents")
+
+    def _process_tiling(self, geotiff_path, label_path, extent_id):
+        """
+        Process tiling for a single extent.
+
+        Parameters
+        ----------
+        geotiff_path : str
+            Path to the original GeoTIFF
+        label_path : str or None
+            Path to the original annotation file
+        extent_id : int
+            Unique identifier for the extent
+        """
+        try:
+            # Tile the image
+            tile_paths = self.tile_image(geotiff_path, extent_id)
+
+            if not tile_paths:
+                logger.warning(f"No tiles created for extent {extent_id}")
+                return
+
+            # Load annotations if available
+            if label_path and Path(label_path).exists():
+                with open(label_path, "r") as f:
+                    annotations = [line.strip() for line in f.readlines()]
+
+                # Tile annotations
+                tile_annotations = self.tile_annotations(
+                    annotations, geotiff_path, extent_id
+                )
+
+                # Save tiled annotations
+                for tile_name, tile_anns in tile_annotations.items():
+                    label_file = self.labels_dir / f"{tile_name}.txt"
+                    with open(label_file, "w") as f:
+                        f.write("\n".join(tile_anns))
+
+            # Remove original image and label (keep only tiles)
+            Path(geotiff_path).unlink()
+            if label_path and Path(label_path).exists():
+                Path(label_path).unlink()
+
+            logger.info(f"Tiling completed for extent {extent_id}")
+
+        except Exception as e:
+            logger.error(f"Failed to process tiling for extent {extent_id}: {e}")
 
     def create_dataset_yaml(self, train_ratio=0.7, val_ratio=0.15):
         """
