@@ -886,7 +886,7 @@ class YOLODataBuilder:
         """
         logger.info("Splitting dataset...")
 
-        # Get all image files
+        # Get all image files (including both regular and tiled images)
         image_files = sorted(list(self.images_dir.glob("extent_*.tif")))
 
         if not image_files:

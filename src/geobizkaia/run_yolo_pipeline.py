@@ -41,11 +41,17 @@ Examples:
    python run_yolo_pipeline.py --limit 5 --carto-output-path ./custom_carto
      Custom output path for vector data
 
-  python run_yolo_pipeline.py --test --enable-tiling --tile-size 512
-     Test mode with tiling: 3 extents split into 512×512 tiles
+   python run_yolo_pipeline.py --test --enable-tiling --tile-size 512
+      Test mode with tiling: 3 extents split into 512×512 tiles (no train/val/test split)
 
-  python run_yolo_pipeline.py --full --enable-tiling --tile-size 640 --tile-overlap 64
-     Full mode with overlapping tiles (640×640 with 64px overlap)
+   python run_yolo_pipeline.py --test --enable-tiling --tile-size 512 --split
+      Test mode with tiling and dataset split: 3 extents split into 512×512 tiles, organized in train/val/test
+
+   python run_yolo_pipeline.py --full --enable-tiling --tile-size 640 --tile-overlap 64
+      Full mode with overlapping tiles (640×640 with 64px overlap)
+
+   python run_yolo_pipeline.py --limit 3 --enable-tiling --tile-size 640 --tile-overlap 64 --split
+      Process 3 extents with tiling and split into train/val/test directories
         """,
     )
 
@@ -145,12 +151,19 @@ Examples:
     # Handle preset modes
     if args.test:
         args.limit = 3
-        args.split = False
-        print("Running in TEST mode (3 extents, no splitting)")
+        # --test sets default behavior, but --split can override it
+        if args.split:
+            print("Running in TEST mode (3 extents, with splitting)")
+        else:
+            print("Running in TEST mode (3 extents, no splitting)")
     elif args.full:
         args.limit = None
         args.split = True
         print("Running in FULL mode (all extents, with splitting)")
+    
+    # Auto-enable split if tiling is enabled and split is not explicitly disabled
+    if args.enable_tiling and not args.test and not args.full and not args.split:
+        print("Note: Tiling enabled. Consider using --split to organize output into train/val/test directories.")
 
     # Validate ratios
     if args.train_ratio + args.val_ratio >= 1.0:
