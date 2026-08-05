@@ -7746,3 +7746,406 @@ Testing on test set...
 2026-08-05 13:42:06,795 - INFO - Results saved to: C:\Users\Gontzal\GIS\Segmentation-1\model\runs\train_yolov8m_20260805_130327
 2026-08-05 13:42:06,795 - INFO - Persistent model: C:\Users\Gontzal\GIS\Segmentation-1\model\best_yolov8m.pt
 2026-08-05 13:42:06,795 - INFO - ============================================================
+2026-08-05 15:03:25,443 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-05 15:03:25,443 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-05 15:03:25,443 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-05 15:03:25,443 - INFO - Persistent model directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model
+2026-08-05 15:03:25,443 - INFO - Continuous training: False
+2026-08-05 15:03:25,443 - INFO - Running full training pipeline...
+2026-08-05 15:03:25,443 - INFO - ============================================================
+2026-08-05 15:03:25,443 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-05 15:03:25,443 - INFO - ============================================================
+2026-08-05 15:03:25,443 - INFO -   Model Size: yolov8m
+2026-08-05 15:03:25,443 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-05 15:03:25,443 - INFO -   Epochs: 100
+2026-08-05 15:03:25,443 - INFO -   Batch Size: 4
+2026-08-05 15:03:25,443 - INFO -   Image Size: 512
+2026-08-05 15:03:25,443 - INFO -   Device: 0
+2026-08-05 15:03:25,443 - INFO -   Early Stopping Patience: 20
+2026-08-05 15:03:25,443 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-05 15:03:25,443 - INFO -   Continuous Training: Disabled
+2026-08-05 15:03:25,443 - INFO -   Persistent Model: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\best_yolov8m.pt
+2026-08-05 15:03:25,443 - INFO - ============================================================
+2026-08-05 15:03:25,738 - INFO - Checking train images for channel conversion...
+2026-08-05 15:03:25,786 - INFO - extent_0000_tile_000.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,800 - INFO - extent_0000_tile_003.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,803 - INFO - extent_0000_tile_004.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,811 - INFO - extent_0000_tile_005.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,811 - INFO - extent_0000_tile_007.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,819 - INFO - extent_0000_tile_008.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,819 - INFO - extent_0000_tile_009.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,827 - INFO - extent_0000_tile_010.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,837 - INFO - extent_0000_tile_011.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,843 - INFO - extent_0000_tile_012.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,843 - INFO - extent_0000_tile_013.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,852 - INFO - extent_0000_tile_015.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,852 - INFO - extent_0000_tile_016.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,852 - INFO - extent_0000_tile_017.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,867 - INFO - extent_0000_tile_018.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,870 - INFO - extent_0000_tile_019.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,875 - INFO - extent_0000_tile_022.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,875 - INFO - extent_0000_tile_023.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,883 - INFO - extent_0000_tile_024.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,892 - INFO - extent_0000_tile_025.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,892 - INFO - extent_0000_tile_026.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,900 - INFO - extent_0000_tile_027.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,900 - INFO - extent_0000_tile_028.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,910 - INFO - extent_0000_tile_029.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,910 - INFO - extent_0000_tile_030.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,920 - INFO - extent_0000_tile_031.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,920 - INFO - extent_0000_tile_033.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,928 - INFO - extent_0000_tile_034.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,928 - INFO - extent_0000_tile_035.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,936 - INFO - extent_0000_tile_036.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,944 - INFO - extent_0000_tile_038.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,944 - INFO - extent_0000_tile_039.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,954 - INFO - extent_0000_tile_040.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,961 - INFO - extent_0000_tile_042.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,961 - INFO - extent_0000_tile_043.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,971 - INFO - extent_0000_tile_044.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,972 - INFO - extent_0000_tile_045.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,981 - INFO - extent_0000_tile_047.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,987 - INFO - extent_0001_tile_000.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,987 - INFO - extent_0001_tile_002.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:25,995 - INFO - extent_0001_tile_004.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,003 - INFO - extent_0001_tile_006.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,003 - INFO - extent_0001_tile_007.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,011 - INFO - extent_0001_tile_011.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,011 - INFO - extent_0001_tile_013.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,020 - INFO - extent_0001_tile_015.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,028 - INFO - extent_0001_tile_016.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,036 - INFO - extent_0001_tile_017.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,036 - INFO - extent_0001_tile_018.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,044 - INFO - extent_0001_tile_019.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,054 - INFO - extent_0001_tile_020.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,054 - INFO - extent_0001_tile_021.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,054 - INFO - extent_0001_tile_023.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,077 - INFO - extent_0001_tile_024.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,077 - INFO - extent_0001_tile_027.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,077 - INFO - extent_0001_tile_028.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,087 - INFO - extent_0001_tile_029.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,095 - INFO - extent_0001_tile_031.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,095 - INFO - extent_0001_tile_032.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,103 - INFO - extent_0001_tile_033.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,103 - INFO - extent_0001_tile_034.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,111 - INFO - extent_0001_tile_035.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,119 - INFO - extent_0001_tile_036.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,121 - INFO - extent_0001_tile_037.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,121 - INFO - extent_0001_tile_040.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,121 - INFO - extent_0001_tile_044.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,139 - INFO - extent_0001_tile_045.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,144 - INFO - extent_0001_tile_046.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,144 - INFO - extent_0001_tile_047.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,154 - INFO - extent_0001_tile_048.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,162 - INFO - extent_0002_tile_000.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,162 - INFO - extent_0002_tile_003.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,170 - INFO - extent_0002_tile_006.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,178 - INFO - extent_0002_tile_007.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,178 - INFO - extent_0002_tile_010.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,187 - INFO - extent_0002_tile_012.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,195 - INFO - extent_0002_tile_013.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,195 - INFO - extent_0002_tile_016.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,204 - INFO - extent_0002_tile_017.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,204 - INFO - extent_0002_tile_019.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,211 - INFO - extent_0002_tile_020.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,219 - INFO - extent_0002_tile_021.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,220 - INFO - extent_0002_tile_022.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,220 - INFO - extent_0002_tile_024.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,220 - INFO - extent_0002_tile_026.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,235 - INFO - extent_0002_tile_027.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,235 - INFO - extent_0002_tile_028.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,244 - INFO - extent_0002_tile_029.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,252 - INFO - extent_0002_tile_030.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,252 - INFO - extent_0002_tile_031.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,252 - INFO - extent_0002_tile_033.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,269 - INFO - extent_0002_tile_034.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,269 - INFO - extent_0002_tile_035.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,285 - INFO - extent_0002_tile_036.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,291 - INFO - extent_0002_tile_037.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,293 - INFO - extent_0002_tile_038.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,293 - INFO - extent_0002_tile_040.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,304 - INFO - extent_0002_tile_041.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,304 - INFO - extent_0002_tile_042.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,312 - INFO - extent_0002_tile_044.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,312 - INFO - extent_0002_tile_045.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,322 - INFO - extent_0002_tile_047.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,322 - INFO - Checking val images for channel conversion...
+2026-08-05 15:03:26,328 - INFO - extent_0000_tile_002.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,328 - INFO - extent_0000_tile_006.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,339 - INFO - extent_0000_tile_041.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,345 - INFO - extent_0000_tile_046.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,345 - INFO - extent_0000_tile_048.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,354 - INFO - extent_0001_tile_001.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,354 - INFO - extent_0001_tile_005.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,362 - INFO - extent_0001_tile_009.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,362 - INFO - extent_0001_tile_010.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,370 - INFO - extent_0001_tile_012.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,370 - INFO - extent_0001_tile_014.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,378 - INFO - extent_0001_tile_030.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,378 - INFO - extent_0001_tile_039.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,388 - INFO - extent_0001_tile_041.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,388 - INFO - extent_0001_tile_042.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,394 - INFO - extent_0002_tile_002.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,394 - INFO - extent_0002_tile_009.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,394 - INFO - extent_0002_tile_011.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,402 - INFO - extent_0002_tile_014.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,402 - INFO - extent_0002_tile_015.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,410 - INFO - extent_0002_tile_025.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,410 - INFO - extent_0002_tile_046.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,410 - INFO - Checking test images for channel conversion...
+2026-08-05 15:03:26,421 - INFO - extent_0000_tile_001.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,421 - INFO - extent_0000_tile_014.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,427 - INFO - extent_0000_tile_020.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,427 - INFO - extent_0000_tile_021.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,427 - INFO - extent_0000_tile_032.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,438 - INFO - extent_0000_tile_037.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,445 - INFO - extent_0001_tile_003.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,445 - INFO - extent_0001_tile_008.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,454 - INFO - extent_0001_tile_022.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,462 - INFO - extent_0001_tile_025.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,462 - INFO - extent_0001_tile_026.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,470 - INFO - extent_0001_tile_038.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,470 - INFO - extent_0001_tile_043.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,478 - INFO - extent_0002_tile_001.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,478 - INFO - extent_0002_tile_004.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,487 - INFO - extent_0002_tile_005.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,491 - INFO - extent_0002_tile_008.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,491 - INFO - extent_0002_tile_018.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,504 - INFO - extent_0002_tile_023.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,510 - INFO - extent_0002_tile_032.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,510 - INFO - extent_0002_tile_039.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,519 - INFO - extent_0002_tile_043.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,528 - INFO - extent_0002_tile_048.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:26,528 - INFO - Fresh training - loading pre-trained model: yolov8m.pt
+2026-08-05 15:03:26,528 - INFO - Loading model: yolov8m.pt
+2026-08-05 15:03:26,711 - INFO - Starting training...
+2026-08-05 15:03:27,072 - ERROR - Training failed: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 344, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 806, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 63, in __init__
+    super().__init__(cfg, overrides, _callbacks)
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 131, in __init__
+    self.device = select_device(self.args.device)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\utils\torch_utils.py", line 275, in select_device
+    raise ValueError(
+ValueError: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+
+2026-08-05 15:03:27,089 - ERROR - Fatal error: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+Traceback (most recent call last):
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 633, in main
+    train_result = trainer.train(resume=args.resume)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\train_yolo_model.py", line 344, in train
+    results = model.train(**train_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\model.py", line 806, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\models\yolo\detect\train.py", line 63, in __init__
+    super().__init__(cfg, overrides, _callbacks)
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\engine\trainer.py", line 131, in __init__
+    self.device = select_device(self.args.device)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\miniconda3\envs\urbancd\Lib\site-packages\ultralytics\utils\torch_utils.py", line 275, in select_device
+    raise ValueError(
+ValueError: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+
+2026-08-05 15:03:36,311 - INFO - Initialized YOLOTrainer with model size: m
+2026-08-05 15:03:36,311 - INFO - Data config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-05 15:03:36,311 - INFO - Save directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-05 15:03:36,311 - INFO - Persistent model directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model
+2026-08-05 15:03:36,311 - INFO - Continuous training: False
+2026-08-05 15:03:36,311 - INFO - Running full training pipeline...
+2026-08-05 15:03:36,311 - INFO - ============================================================
+2026-08-05 15:03:36,311 - INFO - YOLO TRAINING CONFIGURATION
+2026-08-05 15:03:36,311 - INFO - ============================================================
+2026-08-05 15:03:36,311 - INFO -   Model Size: yolov8m
+2026-08-05 15:03:36,311 - INFO -   Data Config: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings\data.yaml
+2026-08-05 15:03:36,311 - INFO -   Epochs: 100
+2026-08-05 15:03:36,311 - INFO -   Batch Size: 4
+2026-08-05 15:03:36,311 - INFO -   Image Size: 512
+2026-08-05 15:03:36,311 - INFO -   Device: -1
+2026-08-05 15:03:36,311 - INFO -   Early Stopping Patience: 20
+2026-08-05 15:03:36,311 - INFO -   Save Directory: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\runs
+2026-08-05 15:03:36,311 - INFO -   Continuous Training: Disabled
+2026-08-05 15:03:36,311 - INFO -   Persistent Model: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\model\best_yolov8m.pt
+2026-08-05 15:03:36,311 - INFO - ============================================================
+2026-08-05 15:03:36,603 - INFO - Checking train images for channel conversion...
+2026-08-05 15:03:36,655 - INFO - extent_0000_tile_000.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,659 - INFO - extent_0000_tile_003.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,662 - INFO - extent_0000_tile_004.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,662 - INFO - extent_0000_tile_005.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,670 - INFO - extent_0000_tile_007.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,673 - INFO - extent_0000_tile_008.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,679 - INFO - extent_0000_tile_009.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,679 - INFO - extent_0000_tile_010.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,687 - INFO - extent_0000_tile_011.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,695 - INFO - extent_0000_tile_012.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,695 - INFO - extent_0000_tile_013.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,703 - INFO - extent_0000_tile_015.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,703 - INFO - extent_0000_tile_016.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,711 - INFO - extent_0000_tile_017.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,711 - INFO - extent_0000_tile_018.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,720 - INFO - extent_0000_tile_019.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,720 - INFO - extent_0000_tile_022.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,728 - INFO - extent_0000_tile_023.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,728 - INFO - extent_0000_tile_024.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,728 - INFO - extent_0000_tile_025.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,737 - INFO - extent_0000_tile_026.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,737 - INFO - extent_0000_tile_027.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,744 - INFO - extent_0000_tile_028.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,744 - INFO - extent_0000_tile_029.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,754 - INFO - extent_0000_tile_030.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,757 - INFO - extent_0000_tile_031.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,761 - INFO - extent_0000_tile_033.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,761 - INFO - extent_0000_tile_034.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,771 - INFO - extent_0000_tile_035.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,772 - INFO - extent_0000_tile_036.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,772 - INFO - extent_0000_tile_038.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,783 - INFO - extent_0000_tile_039.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,787 - INFO - extent_0000_tile_040.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,787 - INFO - extent_0000_tile_042.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,795 - INFO - extent_0000_tile_043.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,795 - INFO - extent_0000_tile_044.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,803 - INFO - extent_0000_tile_045.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,803 - INFO - extent_0000_tile_047.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,811 - INFO - extent_0001_tile_000.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,811 - INFO - extent_0001_tile_002.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,820 - INFO - extent_0001_tile_004.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,820 - INFO - extent_0001_tile_006.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,828 - INFO - extent_0001_tile_007.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,828 - INFO - extent_0001_tile_011.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,828 - INFO - extent_0001_tile_013.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,835 - INFO - extent_0001_tile_015.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,835 - INFO - extent_0001_tile_016.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,835 - INFO - extent_0001_tile_017.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,853 - INFO - extent_0001_tile_018.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,859 - INFO - extent_0001_tile_019.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,859 - INFO - extent_0001_tile_020.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,859 - INFO - extent_0001_tile_021.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,867 - INFO - extent_0001_tile_023.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,867 - INFO - extent_0001_tile_024.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,875 - INFO - extent_0001_tile_027.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,875 - INFO - extent_0001_tile_028.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,875 - INFO - extent_0001_tile_029.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,875 - INFO - extent_0001_tile_031.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,890 - INFO - extent_0001_tile_032.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,898 - INFO - extent_0001_tile_033.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,898 - INFO - extent_0001_tile_034.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,909 - INFO - extent_0001_tile_035.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,914 - INFO - extent_0001_tile_036.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,914 - INFO - extent_0001_tile_037.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,922 - INFO - extent_0001_tile_040.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,926 - INFO - extent_0001_tile_044.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,937 - INFO - extent_0001_tile_045.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,937 - INFO - extent_0001_tile_046.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,945 - INFO - extent_0001_tile_047.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,945 - INFO - extent_0001_tile_048.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,945 - INFO - extent_0002_tile_000.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,953 - INFO - extent_0002_tile_003.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,958 - INFO - extent_0002_tile_006.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,962 - INFO - extent_0002_tile_007.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,962 - INFO - extent_0002_tile_010.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,971 - INFO - extent_0002_tile_012.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,971 - INFO - extent_0002_tile_013.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,971 - INFO - extent_0002_tile_016.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,979 - INFO - extent_0002_tile_017.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,979 - INFO - extent_0002_tile_019.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,987 - INFO - extent_0002_tile_020.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,987 - INFO - extent_0002_tile_021.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,994 - INFO - extent_0002_tile_022.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:36,994 - INFO - extent_0002_tile_024.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,003 - INFO - extent_0002_tile_026.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,004 - INFO - extent_0002_tile_027.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,004 - INFO - extent_0002_tile_028.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,011 - INFO - extent_0002_tile_029.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,011 - INFO - extent_0002_tile_030.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,019 - INFO - extent_0002_tile_031.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,020 - INFO - extent_0002_tile_033.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,027 - INFO - extent_0002_tile_034.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,028 - INFO - extent_0002_tile_035.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,028 - INFO - extent_0002_tile_036.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,038 - INFO - extent_0002_tile_037.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,038 - INFO - extent_0002_tile_038.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,045 - INFO - extent_0002_tile_040.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,045 - INFO - extent_0002_tile_041.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,045 - INFO - extent_0002_tile_042.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,059 - INFO - extent_0002_tile_044.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,062 - INFO - extent_0002_tile_045.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,070 - INFO - extent_0002_tile_047.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,070 - INFO - Checking val images for channel conversion...
+2026-08-05 15:03:37,070 - INFO - extent_0000_tile_002.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,070 - INFO - extent_0000_tile_006.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,070 - INFO - extent_0000_tile_041.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,070 - INFO - extent_0000_tile_046.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,070 - INFO - extent_0000_tile_048.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,085 - INFO - extent_0001_tile_001.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,089 - INFO - extent_0001_tile_005.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,089 - INFO - extent_0001_tile_009.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,093 - INFO - extent_0001_tile_010.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,093 - INFO - extent_0001_tile_012.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,093 - INFO - extent_0001_tile_014.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,103 - INFO - extent_0001_tile_030.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,103 - INFO - extent_0001_tile_039.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,103 - INFO - extent_0001_tile_041.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,110 - INFO - extent_0001_tile_042.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,110 - INFO - extent_0002_tile_002.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,110 - INFO - extent_0002_tile_009.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,110 - INFO - extent_0002_tile_011.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,118 - INFO - extent_0002_tile_014.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,131 - INFO - extent_0002_tile_015.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,131 - INFO - extent_0002_tile_025.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,137 - INFO - extent_0002_tile_046.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,137 - INFO - Checking test images for channel conversion...
+2026-08-05 15:03:37,137 - INFO - extent_0000_tile_001.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,137 - INFO - extent_0000_tile_014.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,145 - INFO - extent_0000_tile_020.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,145 - INFO - extent_0000_tile_021.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,145 - INFO - extent_0000_tile_032.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,153 - INFO - extent_0000_tile_037.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,153 - INFO - extent_0001_tile_003.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,158 - INFO - extent_0001_tile_008.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,158 - INFO - extent_0001_tile_022.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,161 - INFO - extent_0001_tile_025.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,161 - INFO - extent_0001_tile_026.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,161 - INFO - extent_0001_tile_038.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,171 - INFO - extent_0001_tile_043.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,171 - INFO - extent_0002_tile_001.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,171 - INFO - extent_0002_tile_004.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,171 - INFO - extent_0002_tile_005.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,179 - INFO - extent_0002_tile_008.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,179 - INFO - extent_0002_tile_018.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,179 - INFO - extent_0002_tile_023.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,179 - INFO - extent_0002_tile_032.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,187 - INFO - extent_0002_tile_039.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,187 - INFO - extent_0002_tile_043.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,195 - INFO - extent_0002_tile_048.tif already has 3 channels, no conversion needed
+2026-08-05 15:03:37,195 - INFO - Fresh training - loading pre-trained model: yolov8m.pt
+2026-08-05 15:03:37,195 - INFO - Loading model: yolov8m.pt
+2026-08-05 15:03:37,304 - INFO - Starting training...

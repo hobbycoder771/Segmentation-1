@@ -1,14 +1,14 @@
 # YOLO Building Detection Dataset
-        path: C:\Users\Gontzal\GIS\Segmentation-1\src\geobizkaia\..\..\dataset\yolo_buildings
-        train: images/train
-        val: images/val
-        test: images/test
+path: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\dataset\yolo_buildings
+train: images/train
+val: images/val
+test: images/test
 
-        nc: 1
-        names:
-        0: building
+nc: 1
+names:
+  0: building
 
-        train_ratio: 0.7
-        val_ratio: 0.15
-        test_ratio: 0.15000000000000005
+train_ratio: 0.7
+val_ratio: 0.15
+test_ratio: 0.15
         
