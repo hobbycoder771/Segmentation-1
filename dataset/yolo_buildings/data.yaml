@@ -1,5 +1,5 @@
 # YOLO Building Detection Dataset
-        path: C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\Segmentation-1\src\geobizkaia\..\..\dataset\yolo_buildings
+        path: C:\Users\Gontzal\GIS\Segmentation-1\src\geobizkaia\..\..\dataset\yolo_buildings
         train: images/train
         val: images/val
         test: images/test

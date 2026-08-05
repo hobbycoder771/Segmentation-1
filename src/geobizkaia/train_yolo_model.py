@@ -44,7 +44,7 @@ class YOLOTrainer:
         data_yaml: str = "../../dataset/yolo_buildings/data.yaml",
         model_size: str = "n",
         epochs: int = 100,
-        imgsz: int = 4096,  # image 4096x4096 pixels
+        imgsz: int = 640,  # image 4096x4096 pixels
         batch_size: int = 4,
         device: int = 0,
         patience: int = 20,
