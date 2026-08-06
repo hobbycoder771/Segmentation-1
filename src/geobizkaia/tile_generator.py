@@ -169,5 +169,13 @@ class TileGenerator:
             tile_count += 1
             total_tiles += len(self.generate_tile_coords(*Image.open(mask_path).size[::-1]))
         
-        logger.info(f"Tiled {tile_count} pairs into {total_tiles} tiles")
+        # Clean up original files (keep only tiles)
+        for image_path in image_files:
+            image_path.unlink()  # Delete original image
+            mask_name = image_path.stem + ".png"
+            mask_path = masks_dir / mask_name
+            if mask_path.exists():
+                mask_path.unlink()  # Delete original mask
+        
+        logger.info(f"Tiled {tile_count} pairs into {total_tiles} tiles (originals removed)")
         return tile_count, total_tiles
