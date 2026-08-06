@@ -113,7 +113,6 @@ class SegmentationDataBuilder:
             mask_path = self.masks_dir / f"extent_{extent_id:04d}.png"
             Image.fromarray(mask, mode="L").save(mask_path)
             logger.info(f"Generated mask {extent_id}")
-            self.generate_label_file(extent_id, str(mask_path))
             return str(mask_path)
         except Exception as e:
             logger.warning(f"Mask generation failed {extent_id}: {e}")
