@@ -138,6 +138,15 @@ def main():
                         prefix=split_name
                     )
         
+        # Create YOLO segmentation labels from masks
+        logger.info("Creating YOLO segmentation labels from masks...")
+        try:
+            from create_segmentation_labels import create_segmentation_labels
+            created_labels = create_segmentation_labels(args.output_dir, args.output_dir)
+            logger.info(f"Created {created_labels} label files for training")
+        except Exception as e:
+            logger.warning(f"Failed to create segmentation labels: {e}")
+        
         print("\n" + "="*60)
         print("SEGMENTATION PIPELINE COMPLETED!")
         print("="*60)
