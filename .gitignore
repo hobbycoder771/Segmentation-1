@@ -1,21 +1,39 @@
-# Training Data - Images and Labels
-dataset/yolo_buildings/images/
-dataset/yolo_buildings/labels/
-dataset/yolo_buildings/data.yaml
+# Image Files - Do Not Track
+*.tif
+*.tiff
+*.TIF
+*.TIFF
+*.png
+*.PNG
+*.jpg
+*.jpeg
+*.JPG
+*.JPEG
+*.gif
+*.GIF
+*.bmp
+*.BMP
+*.webp
+*.WEBP
 
-# YOLO Model Files
-# Ignore training runs but track persistent best models
-model/runs/
+# Dataset Directories
+dataset/
+data/vector/extents/
+data/vector/carto/
+
+# Model Files
+model/
 *.pt
-!model/best_yolov8*.pt
-model/training_history_*.json
-!model/training_history_*.json
+*.pth
+*.onnx
 
-# YAML files - ignore but track important ones
-*.yaml
-!dataset/yolo_buildings/data.yaml
+# Training Outputs
+runs/
+logs/
+*.log
+training_history_*.json
 
-# Python Cache
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -36,6 +54,9 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
 
 # Virtual Environments
 venv/
@@ -49,19 +70,40 @@ env/
 *.swp
 *.swo
 *~
+.DS_Store
 
 # OS
-.DS_Store
 Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# Logs
-*.log
-training.log
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
 
-# YOLO runs and results
-runs/
-src/geobizkaia/runs/
-
-# Cache files
+# Cache
+.cache/
+.pytest_cache/
 *.cache
-.cache
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Environment
+.env
+.env.local
+config.local.*
+
+# GIS Data
+*.gpkg-wal
+*.gpkg-shm
