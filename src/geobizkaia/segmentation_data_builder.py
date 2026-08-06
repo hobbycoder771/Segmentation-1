@@ -166,12 +166,21 @@ names:
         np.random.seed(42)
         np.random.shuffle(image_files)
         n = len(image_files)
-        train_count, val_count = int(n * train_ratio), int(n * val_ratio)
-
+        
+        # Ensure at least 1 sample in train if n > 0
+        train_count = max(1, int(n * train_ratio))
+        val_count = max(0, int(n * val_ratio))
+        
+        # Adjust if counts exceed total
+        if train_count + val_count > n:
+            val_count = max(0, n - train_count)
+        
+        logger.info(f"Split: train={train_count}, val={val_count}, test={n-train_count-val_count}")
+        
         for split in ["train", "val", "test"]:
             (self.images_dir / split).mkdir(parents=True, exist_ok=True)
             (self.masks_dir / split).mkdir(parents=True, exist_ok=True)
-
+        
         for files, split in [(image_files[:train_count], "train"),
                               (image_files[train_count:train_count+val_count], "val"),
                               (image_files[train_count+val_count:], "test")]:
