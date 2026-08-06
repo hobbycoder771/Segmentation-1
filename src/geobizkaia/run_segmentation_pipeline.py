@@ -3,6 +3,7 @@
 import argparse
 import sys
 import logging
+import shutil
 from pathlib import Path
 
 # Setup logging
@@ -11,6 +12,27 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
+
+
+def cleanup_output_directory(output_dir):
+    """Clean up all files from the output directory before starting the pipeline.
+    
+    This ensures we start fresh and avoid cascading tile files like:
+    test_test_test_extent_0006_tile_0089_tile_0002_tile_0000.tif
+    """
+    output_path = Path(output_dir)
+    if not output_path.exists():
+        logger.info(f"Output directory does not exist yet: {output_path}")
+        return
+    
+    logger.info(f"Cleaning up output directory: {output_path}")
+    try:
+        # Remove the entire output directory and recreate it to start fresh
+        shutil.rmtree(output_path)
+        output_path.mkdir(parents=True, exist_ok=True)
+        logger.info("Output directory cleaned successfully")
+    except Exception as e:
+        logger.warning(f"Failed to clean output directory: {e}")
 
 
 def main():
@@ -48,6 +70,9 @@ def main():
     print("="*60)
     print(f"Output directory: {args.output_dir}")
     print(f"Image size: {args.image_size}x{args.image_size}")
+    
+    # Clean up output directory before starting
+    cleanup_output_directory(args.output_dir)
     
     # Determine mode
     if args.test:
