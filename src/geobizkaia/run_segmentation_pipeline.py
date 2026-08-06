@@ -37,6 +37,9 @@ def main():
         default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/Kartografia_BTB_Cartografia_5000/FeatureServer/16/query",
     )
     parser.add_argument("--carto-output-path", default="../../data/vector/carto")
+    parser.add_argument("--tile-size", type=int, default=512, help="Tile size in pixels (default: 512)")
+    parser.add_argument("--tile-overlap", type=float, default=0.2, help="Tile overlap ratio 0-1 (default: 0.2)")
+    parser.add_argument("--no-tiling", action="store_true", help="Disable tiling")
 
     args = parser.parse_args()
 
@@ -90,6 +93,25 @@ def main():
         
         # Run pipeline
         builder.run_pipeline(limit=limit, split=split)
+
+        # Apply tiling if enabled
+        if not args.no_tiling:
+            from tile_generator import TileGenerator
+            tiler = TileGenerator(tile_size=args.tile_size, overlap=args.tile_overlap)
+            
+            for split_name in ["train", "val", "test"]:
+                images_split = Path(args.output_dir) / "images" / split_name
+                masks_split = Path(args.output_dir) / "masks" / split_name
+                
+                if images_split.exists() and list(images_split.glob("*.tif")):
+                    logger.info(f"Tiling {split_name} split...")
+                    tiler.tile_dataset(
+                        str(images_split),
+                        str(masks_split),
+                        str(images_split),
+                        str(masks_split),
+                        prefix=split_name
+                    )
         
         print("\n" + "="*60)
         print("SEGMENTATION PIPELINE COMPLETED!")
