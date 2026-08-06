@@ -22,7 +22,7 @@ class YOLOSegmentationTrainer:
         epochs: int = 100,
         imgsz: int = 640,
         batch_size: int = 4,
-        device = "cpu",
+        device = "auto",
         patience: int = 20,
         save_dir: str = "../../model/runs",
         model_dir: str = "../../model",
@@ -105,7 +105,7 @@ def main():
     parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--batch", type=int, default=4)
     parser.add_argument("--imgsz", type=int, default=640)
-    parser.add_argument("--device", default="cpu", help="Device: cpu or GPU id")
+    parser.add_argument("--device", default="auto", help="Device: auto, cpu, or GPU id (0,1,2...)")
     parser.add_argument("--patience", type=int, default=20)
     parser.add_argument("--data", default="../../dataset/yolo_buildings_seg/data.yaml")
     parser.add_argument("--resume", help="Resume from checkpoint")
@@ -114,6 +114,18 @@ def main():
     parser.add_argument("--test-only", help="Test inference only")
 
     args = parser.parse_args()
+
+    # Auto-detect device if not specified
+    import torch
+    if args.device == "auto":
+        args.device = 0 if torch.cuda.is_available() else "cpu"
+        device_type = "GPU" if torch.cuda.is_available() else "CPU"
+        logger.info(f"Auto-detected device: {device_type} ({args.device})")
+    elif isinstance(args.device, str) and args.device != "cpu":
+        try:
+            args.device = int(args.device)
+        except ValueError:
+            args.device = "cpu"
 
     trainer = YOLOSegmentationTrainer(
         data_yaml=args.data,
