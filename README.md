@@ -4,54 +4,82 @@ Convert building polygons to pixel-level segmentation masks and train YOLOv8-Seg
 
 ## Quick Start - Progressive Training Workflow
 
-### 1. Initial Training (First Time)
+### Complete Workflow (Repeat Each Cycle with Different Areas)
 
 ```bash
 cd src/geobizkaia
 
-# Generate dataset
-python run_segmentation_pipeline.py --test
+# 1. Define new extents (geographic areas)
+#    Edit data/vector/extents/extent.gpkg with new areas (replaces previous extents)
 
-# Train model (automatically starts from pre-trained YOLOv8-Seg)
+# 2. Generate dataset from those extents
+#    Downloads fresh imagery and generates masks for all extents
+python run_segmentation_pipeline.py --full
+
+# 3. Retrain model on the new dataset
+#    The model automatically loads from the previous best model and continues learning
 python train_segmentation_model.py --model m --epochs 50
 ```
 
-### 2. Progressive Training (When New Imagery Arrives)
+### What Happens at Each Step
 
-```bash
-# Add new imagery to dataset/yolo_buildings_seg/images/ and dataset/yolo_buildings_seg/masks/
+**Step 1 - Define New Extents:**
+- Replace contents of `data/vector/extents/extent.gpkg` with new geographic areas
+- Extents are not accumulated, they are replaced each cycle
+- These define which areas to download imagery for
 
-# Run training again - automatically continues from the best previous model
-python train_segmentation_model.py --model m --epochs 50
+**Step 2 - Generate Fresh Dataset:**
+- Downloads fresh imagery from ArcGIS service for the defined extents
+- Clips vector data (buildings) from `data/vector/carto/karto.gpkg`
+- Generates segmentation masks
+- **Completely overwrites** `dataset/yolo_buildings_seg/` with new data from new extents
+- Splits data into train/val/test sets
+
+**Step 3 - Retrain Model:**
+- **Automatically loads** best model from previous training session
+- Trains on the newly generated dataset (different geographic area)
+- Applies knowledge learned from previous areas to new area
+- **Updates** `model/best_yolov8m-seg.pt` with improved model
+- **Tracks** all training sessions in `model/training_history_yolov8m-seg.json`
+
+### Results After Each Cycle
+
+- **Persistent Model**: `model/best_yolov8{n,s,m,l,x}-seg.pt` - Progressively improved across different areas
+- **Training History**: `model/training_history_yolov8{size}-seg.json` - Shows all training runs and epochs
+- **Dataset**: `dataset/yolo_buildings_seg/` - Fresh data from current extents (replaced each cycle)
+- **Model Improvement**: Model learns from each new geographic area and generalizes better
+
+## Pipeline Overview - Progressive Training Cycle
+
 ```
+Cycle 1: Area A Data
+1. Define Extents (Area A)
+   ├─ Edit extent.gpkg with extents for Area A
+   ↓
+2. Generate Dataset
+   ├─ Download imagery → Clip vectors → Generate masks
+   ├─ Output: dataset/yolo_buildings_seg/ (Area A data)
+   ↓
+3. Train Model
+   ├─ Load: Pre-trained YOLOv8-Seg
+   ├─ Train: on Area A data
+   └─ Save: model/best_yolov8m-seg.pt v1
 
-The training will:
-- **Automatically load** the best model from the previous training session
-- **Continue training** on the new imagery
-- **Update** `model/best_yolov8m-seg.pt` with the improved model
-- **Track** all training sessions in `model/training_history_yolov8m-seg.json`
+Cycle 2: Area B Data (DIFFERENT from Area A)
+1. Define New Extents (Area B - replace Area A)
+   ├─ Edit extent.gpkg with extents for Area B
+   ↓
+2. Generate Fresh Dataset
+   ├─ Download imagery → Clip vectors → Generate masks
+   ├─ Output: dataset/yolo_buildings_seg/ (Area B data - overwrites Area A)
+   ↓
+3. Retrain Model
+   ├─ Load: model/best_yolov8m-seg.pt v1 (from Area A)
+   ├─ Train: on Area B data (applies knowledge from Area A)
+   └─ Save: model/best_yolov8m-seg.pt v2 (improved)
 
-### 3. Results
-
-- **Persistent Model**: `model/best_yolov8{n,s,m,l,x}-seg.pt` - Updated after each training
-- **Training History**: `model/training_history_yolov8{size}-seg.json` - Tracks all training sessions
-- **Dataset**: `dataset/yolo_buildings_seg/` - Add new data here for progressive training
-
-## Pipeline Overview
-
-```
-Building Polygons (GeoPackage)
-        ↓
-  [MaskGenerator]
-        ↓
-Binary PNG Masks (0/255)
-        ↓
-   [Dataset Split]
-   train/val/test
-        ↓
-[YOLOv8-Seg Training]
-        ↓
-Trained Segmentation Model
+Cycle 3+: Repeat with New Areas
+   └─ Model progressively improves as it learns from different regions
 ```
 
 ## Directory Structure
@@ -83,24 +111,26 @@ model/
 
 ## Command Examples
 
-### Data Generation
+### Data Generation from Extents
 
 ```bash
-# Test mode (3 extents, no split)
-python run_segmentation_pipeline.py --test
-
-# Full mode (all extents, with split)
+# Generate dataset from ALL extents (recommended for retraining)
 python run_segmentation_pipeline.py --full
 
-# Custom: 10 extents with split
+# Test mode (first 3 extents, no train/val/test split)
+python run_segmentation_pipeline.py --test
+
+# Custom: Process specific number of extents with split
 python run_segmentation_pipeline.py --limit 10 --split
 
-# Custom image size
+# Custom image size (default: 4096)
 python run_segmentation_pipeline.py --full --image-size 2048
 
-# Without FeatureServer queries
-python run_segmentation_pipeline.py --test --no-vector-clipping
+# Without automatic vector clipping (if FeatureServer is unavailable)
+python run_segmentation_pipeline.py --full --no-vector-clipping
 ```
+
+**Important**: The script completely overwrites `dataset/yolo_buildings_seg/` - this is intentional. Each cycle you define new extents (replacing previous ones), and the pipeline generates a fresh dataset for those new areas.
 
 ### Model Training - Progressive Training Examples
 
@@ -140,33 +170,45 @@ python train_segmentation_model.py --model m --epochs 50 --batch 8 --imgsz 1024 
 
 ## How Progressive Training Works
 
-### Workflow
+### Training Flow Across Cycles
 
-1. **First Training Session**
-   - Load pre-trained YOLOv8-Seg model
-   - Train on initial dataset
-   - Save best model to `model/best_yolov8m-seg.pt`
-   - Record session in `model/training_history_yolov8m-seg.json`
+Each cycle uses **new extent data** - extents are not accumulated, they are replaced.
 
-2. **Next Training Session (New Imagery)**
-   - **Automatically load** `model/best_yolov8m-seg.pt` (previous best model)
-   - Train on old + new imagery combined
-   - Improve on previous weights
-   - Update persistent model with new best
-   - Record new session in history
+1. **Cycle 1: Initial Training**
+   - Define extents in `data/vector/extents/extent.gpkg` (e.g., Area A)
+   - Run pipeline: Download imagery + generate masks for Area A
+   - Create dataset: `dataset/yolo_buildings_seg/` (Area A data)
+   - Train model: Load pre-trained YOLOv8-Seg
+   - Save: `model/best_yolov8m-seg.pt` (v1)
 
-3. **Repeat as Needed**
-   - Each run builds on the previous best model
-   - Model improves incrementally with new data
-   - No manual intervention needed
+2. **Cycle 2: New Extents, Retrain Model**
+   - Replace extents in `data/vector/extents/extent.gpkg` (e.g., Area B - different from A)
+   - Run pipeline: Download imagery + generate masks for Area B only
+   - **Overwrites** `dataset/yolo_buildings_seg/` with Area B data
+   - Train model: **Automatically loads** `model/best_yolov8m-seg.pt` (v1)
+   - Trains on Area B using knowledge from Area A
+   - Save: `model/best_yolov8m-seg.pt` (v2) - improved model
+
+3. **Cycle 3+: Repeat with Different Areas**
+   - Replace extents with new areas (e.g., Area C)
+   - Run pipeline (overwrites dataset with Area C)
+   - Run training (loads v2, trains on Area C, saves v3)
+   - Model keeps improving even though datasets are different
 
 ### Example Timeline
 
 ```
-Training Run 1: 0% → 75% accuracy → Saved to model/best_yolov8m-seg.pt
-Training Run 2: 75% → 82% accuracy → Updated model/best_yolov8m-seg.pt
-Training Run 3: 82% → 87% accuracy → Updated model/best_yolov8m-seg.pt
+Cycle 1: Area A (10 extents) → 75% accuracy → model v1 saved
+Cycle 2: Area B (10 extents) → 82% accuracy → model v2 saved (loaded v1, trained on new area)
+Cycle 3: Area C (10 extents) → 87% accuracy → model v3 saved (loaded v2, trained on another area)
 ```
+
+### Key Points
+- ✅ Dataset is **completely fresh** each cycle (different geographic areas)
+- ✅ Extents are **replaced, not accumulated** (define new areas each time)
+- ✅ Model **loads previous best** automatically (trains on new area with prior knowledge)
+- ✅ Model **progressively improves** as it learns from different regions
+- ✅ No manual model management needed
 
 ## Performance Tips
 

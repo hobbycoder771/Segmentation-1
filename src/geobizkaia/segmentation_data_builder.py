@@ -7,9 +7,12 @@ from datetime import datetime
 import shutil
 import requests
 import rasterio
+import json
 from rasterio.transform import from_bounds
 from rasterio.features import rasterize
 from PIL import Image
+from pyproj import Transformer
+from shapely.geometry import shape
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -30,6 +33,8 @@ class SegmentationDataBuilder:
         self.image_size = image_size
         self.crs = crs
         self.mask_value = mask_value
+        self.feature_server_url = feature_server_url
+        self.carto_output_path = carto_output_path
         self.images_dir = self.output_dir / "images"
         self.masks_dir = self.output_dir / "masks"
         self.extents_gdf = None
@@ -39,25 +44,183 @@ class SegmentationDataBuilder:
         self.images_dir.mkdir(parents=True, exist_ok=True)
         self.masks_dir.mkdir(parents=True, exist_ok=True)
         logger.info(f"Directories created")
+        
+        # Clear karto.gpkg at the beginning of pipeline if using FeatureServer
+        if self.feature_server_url and self.carto_output_path:
+            self._clear_karto_gpkg()
+    
+    def _clear_karto_gpkg(self):
+        """Clear karto.gpkg at the beginning of pipeline.
+        
+        This ensures only data from the current extents is in karto.gpkg.
+        Removes old layers and recreates the file if possible.
+        """
+        try:
+            gpkg_path = Path(self.carto_output_path) / "karto.gpkg"
+            if not gpkg_path.exists():
+                logger.info(f"karto.gpkg does not exist yet, will be created during processing")
+                return
+            
+            # Try to delete old layers from the gpkg using SQL
+            import sqlite3
+            try:
+                conn = sqlite3.connect(str(gpkg_path))
+                cursor = conn.cursor()
+                
+                # Find and remove old layer tables
+                old_layers = ["buildings_tile_0", "buildings_tile_1", "buildings_tile_2", 
+                             "buildings_tile_3", "buildings_tile_4", "buildings_tile_5",
+                             "buildings_tile_6", "buildings_tile_7", "buildings_tile_8", 
+                             "buildings_tile_9"]
+                
+                removed_layers = []
+                for layer in old_layers:
+                    try:
+                        # Drop the layer table
+                        cursor.execute(f"DROP TABLE IF EXISTS [{layer}];")
+                        # Remove spatial index tables
+                        for idx_table in [f"rtree_{layer}_geom", f"rtree_{layer}_geom_rowid", 
+                                         f"rtree_{layer}_geom_node", f"rtree_{layer}_geom_parent"]:
+                            cursor.execute(f"DROP TABLE IF EXISTS [{idx_table}];")
+                        # Remove from gpkg_contents
+                        cursor.execute("DELETE FROM gpkg_contents WHERE table_name = ?;", (layer,))
+                        removed_layers.append(layer)
+                    except:
+                        pass
+                
+                conn.commit()
+                conn.close()
+                
+                if removed_layers:
+                    logger.info(f"Removed {len(removed_layers)} old layers from karto.gpkg")
+                else:
+                    logger.info(f"No old layers to remove from karto.gpkg")
+                    
+            except Exception as e:
+                logger.warning(f"Failed to clean up old layers: {e}")
+                # Fall back to deleting the entire file
+                try:
+                    gpkg_path.unlink()
+                    logger.info(f"Deleted karto.gpkg for fresh start")
+                except:
+                    logger.warning(f"Could not delete karto.gpkg, old layers may persist")
+                    
+        except Exception as e:
+            logger.warning(f"Failed to clear karto.gpkg: {e}")
+    
+    def fetch_vectors_from_featureserver(self, extent_bounds, extent_id):
+        """Fetch vector data from FeatureServer for a specific extent.
+        
+        Returns a GeoDataFrame with the clipped vector data, or None if fetch fails.
+        Also saves the data to karto.gpkg for persistence.
+        """
+        if not self.feature_server_url:
+            return None
+        
+        try:
+            minx, miny, maxx, maxy = extent_bounds
+            
+            # Transform from EPSG:3857 to EPSG:25830 for the query
+            transformer = Transformer.from_crs("EPSG:3857", "EPSG:25830", always_xy=True)
+            xmin2, ymin2 = transformer.transform(minx, miny)
+            xmax2, ymax2 = transformer.transform(maxx, maxy)
+            
+            # Build geometry for spatial query
+            geometry = {
+                "xmin": xmin2,
+                "ymin": ymin2,
+                "xmax": xmax2,
+                "ymax": ymax2,
+                "spatialReference": {"wkid": 25830},
+            }
+            
+            # Query FeatureServer
+            params = {
+                "f": "geojson",
+                "where": "1=1",
+                "geometry": json.dumps(geometry),
+                "geometryType": "esriGeometryEnvelope",
+                "spatialRel": "esriSpatialRelIntersects",
+                "inSR": 25830,
+                "outSR": 3857,
+                "returnGeometry": "true",
+                "outFields": "*",
+            }
+            
+            logger.info(f"Querying FeatureServer for extent {extent_id}...")
+            response = requests.get(self.feature_server_url, params=params, timeout=30)
+            response.raise_for_status()
+            
+            geojson = response.json()
+            features = geojson.get("features", [])
+            logger.info(f"Retrieved {len(features)} features from FeatureServer for extent {extent_id}")
+            
+            if not features:
+                return None
+            
+            # Convert to GeoDataFrame
+            rows = []
+            for feat in features:
+                attrs = feat["properties"]
+                attrs["geometry"] = shape(feat["geometry"])
+                rows.append(attrs)
+            
+            gdf = gpd.GeoDataFrame(rows, crs="EPSG:3857")
+            
+            # Save to karto.gpkg with layer name based on extent_id
+            if self.carto_output_path:
+                self._save_to_karto_gpkg(gdf, extent_id)
+            
+            return gdf
+            
+        except Exception as e:
+            logger.warning(f"Failed to fetch vectors from FeatureServer: {e}")
+            return None
+    
+    def _save_to_karto_gpkg(self, gdf, extent_id):
+        """Save clipped vector data to karto.gpkg.
+        
+        Creates a layer for each extent with the clipped building data.
+        """
+        try:
+            if not self.carto_output_path:
+                return
+            
+            gpkg_path = Path(self.carto_output_path) / "karto.gpkg"
+            gpkg_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Create layer name based on extent_id
+            layer_name = f"extent_{extent_id:04d}"
+            
+            # Write new data to the layer (creates or overwrites)
+            gdf.to_file(gpkg_path, layer=layer_name, driver="GPKG", mode="a")
+            logger.info(f"Saved layer '{layer_name}' to {gpkg_path}")
+        
+        except Exception as e:
+            logger.warning(f"Failed to save clipped data to karto.gpkg: {e}")
 
     def load_data(self):
         logger.info("Loading extents...")
         self.extents_gdf = gpd.read_file(self.extents_gpkg, layer=self.extents_layer)
         logger.info(f"Loaded {len(self.extents_gdf)} extents")
 
-        logger.info("Loading objects...")
-        try:
-            self.objects_gdf = gpd.read_file(self.objects_gpkg, layer=self.objects_layer)
-        except:
-            import pyogrio
-            all_layers = pyogrio.list_layers(self.objects_gpkg)[:,0].tolist()
-            matching = [l for l in all_layers if self.objects_layer.lower() in l.lower()]
-            gdfs = [gpd.read_file(self.objects_gpkg, layer=l) for l in matching]
-            self.objects_gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True), crs=gdfs[0].crs)
-        
-        logger.info(f"Loaded {len(self.objects_gdf)} objects")
-        if self.objects_gdf.crs != self.extents_gdf.crs:
-            self.objects_gdf = self.objects_gdf.to_crs(self.extents_gdf.crs)
+        # Load static objects only if not using dynamic FeatureServer fetching
+        if not self.feature_server_url:
+            logger.info("Loading objects from static dataset...")
+            try:
+                self.objects_gdf = gpd.read_file(self.objects_gpkg, layer=self.objects_layer)
+            except:
+                import pyogrio
+                all_layers = pyogrio.list_layers(self.objects_gpkg)[:,0].tolist()
+                matching = [l for l in all_layers if self.objects_layer.lower() in l.lower()]
+                gdfs = [gpd.read_file(self.objects_gpkg, layer=l) for l in matching]
+                self.objects_gdf = gpd.GeoDataFrame(pd.concat(gdfs, ignore_index=True), crs=gdfs[0].crs)
+            
+            logger.info(f"Loaded {len(self.objects_gdf)} objects")
+            if self.objects_gdf.crs != self.extents_gdf.crs:
+                self.objects_gdf = self.objects_gdf.to_crs(self.extents_gdf.crs)
+        else:
+            logger.info("Using dynamic FeatureServer for vector data (static dataset not loaded)")
 
     def download_imagery(self, extent_bounds, extent_id):
         try:
@@ -131,7 +294,19 @@ class SegmentationDataBuilder:
             if not geotiff_path:
                 continue
 
-            objects_for_extent = self.objects_gdf[self.objects_gdf.geometry.intersects(extent_geom)]
+            # Try to fetch vectors from FeatureServer first (dynamic clipping)
+            if self.feature_server_url:
+                objects_for_extent = self.fetch_vectors_from_featureserver(extent_bounds, extent_id)
+                if objects_for_extent is not None:
+                    logger.info(f"Using {len(objects_for_extent)} features from FeatureServer for extent {extent_id}")
+                else:
+                    # Fall back to static dataset if FeatureServer fails
+                    logger.warning(f"FeatureServer fetch failed for extent {extent_id}, falling back to static data")
+                    objects_for_extent = self.objects_gdf[self.objects_gdf.geometry.intersects(extent_geom)] if self.objects_gdf is not None else None
+            else:
+                # Use static dataset if no FeatureServer URL provided
+                objects_for_extent = self.objects_gdf[self.objects_gdf.geometry.intersects(extent_geom)] if self.objects_gdf is not None else None
+            
             mask_path = self.generate_mask(extent_bounds, extent_id, objects_for_extent)
             if mask_path:
                 successful += 1
