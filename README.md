@@ -1,39 +1,41 @@
-# YOLO Building Segmentation Pipeline
+# YOLO Building Segmentation Pipeline - Progressive Training
 
-Convert building polygons to pixel-level segmentation masks and train YOLOv8-Seg models.
+Convert building polygons to pixel-level segmentation masks and train YOLOv8-Seg models incrementally as new imagery becomes available.
 
-## Quick Start
+## Quick Start - Progressive Training Workflow
 
-### 1. Generate Segmentation Dataset
+### 1. Initial Training (First Time)
 
 ```bash
 cd src/geobizkaia
 
-# Test with 3 extents
+# Generate dataset
 python run_segmentation_pipeline.py --test
 
-# Full dataset with train/val/test split
-python run_segmentation_pipeline.py --full
+# Train model (automatically starts from pre-trained YOLOv8-Seg)
+python train_segmentation_model.py --model m --epochs 50
 ```
 
-### 2. Train Model
+### 2. Progressive Training (When New Imagery Arrives)
 
 ```bash
-# Nano model (fast, lower accuracy)
-python train_segmentation_model.py --model n --epochs 100 --imgsz 4096
+# Add new imagery to dataset/yolo_buildings_seg/images/ and dataset/yolo_buildings_seg/masks/
 
-# Medium model (balanced)
-python train_segmentation_model.py --model m --epochs 100 --imgsz 4096
-
-# Large model (slower, higher accuracy)
-python train_segmentation_model.py --model l --epochs 100 --imgsz 4096
+# Run training again - automatically continues from the best previous model
+python train_segmentation_model.py --model m --epochs 50
 ```
+
+The training will:
+- **Automatically load** the best model from the previous training session
+- **Continue training** on the new imagery
+- **Update** `model/best_yolov8m-seg.pt` with the improved model
+- **Track** all training sessions in `model/training_history_yolov8m-seg.json`
 
 ### 3. Results
 
-- **Model saved to**: `model/best_yolov8{n,s,m,l,x}-seg.pt`
-- **Training log**: `training_seg.log`
-- **Dataset**: `dataset/yolo_buildings_seg/`
+- **Persistent Model**: `model/best_yolov8{n,s,m,l,x}-seg.pt` - Updated after each training
+- **Training History**: `model/training_history_yolov8{size}-seg.json` - Tracks all training sessions
+- **Dataset**: `dataset/yolo_buildings_seg/` - Add new data here for progressive training
 
 ## Pipeline Overview
 
@@ -100,23 +102,30 @@ python run_segmentation_pipeline.py --full --image-size 2048
 python run_segmentation_pipeline.py --test --no-vector-clipping
 ```
 
-### Model Training
+### Model Training - Progressive Training Examples
 
 ```bash
-# Quick test (nano model, 10 epochs)
-python train_segmentation_model.py --model n --epochs 10
+# Initial training (first time with fresh dataset)
+python train_segmentation_model.py --model m --epochs 50
 
-# Production (medium model, 100 epochs)
-python train_segmentation_model.py --model m --epochs 100 --imgsz 4096
+# Progressive training (next time with new imagery - RECOMMENDED)
+# Automatically loads the previous best model
+python train_segmentation_model.py --model m --epochs 50
 
-# Resume from checkpoint
-python train_segmentation_model.py --resume /path/to/checkpoint.pt
+# Fresh training (ignore previous model, start over)
+python train_segmentation_model.py --model m --epochs 50 --no-continuous
 
-# Validation only
+# Resume from specific checkpoint
+python train_segmentation_model.py --model m --epochs 50 --resume /path/to/checkpoint.pt
+
+# Show training history
+python train_segmentation_model.py --show-history
+
+# Validate existing model
 python train_segmentation_model.py --validate-only
 
-# Custom batch size and device
-python train_segmentation_model.py --model m --batch 8 --device 0
+# Custom settings
+python train_segmentation_model.py --model m --epochs 50 --batch 8 --imgsz 1024 --device 0
 ```
 
 ## Model Sizes
@@ -128,6 +137,36 @@ python train_segmentation_model.py --model m --batch 8 --device 0
 | medium (m) | 26.9M | Medium | High |
 | large (l) | 43.7M | Slow | Very High |
 | xlarge (x) | 68.2M | Slowest | Best |
+
+## How Progressive Training Works
+
+### Workflow
+
+1. **First Training Session**
+   - Load pre-trained YOLOv8-Seg model
+   - Train on initial dataset
+   - Save best model to `model/best_yolov8m-seg.pt`
+   - Record session in `model/training_history_yolov8m-seg.json`
+
+2. **Next Training Session (New Imagery)**
+   - **Automatically load** `model/best_yolov8m-seg.pt` (previous best model)
+   - Train on old + new imagery combined
+   - Improve on previous weights
+   - Update persistent model with new best
+   - Record new session in history
+
+3. **Repeat as Needed**
+   - Each run builds on the previous best model
+   - Model improves incrementally with new data
+   - No manual intervention needed
+
+### Example Timeline
+
+```
+Training Run 1: 0% → 75% accuracy → Saved to model/best_yolov8m-seg.pt
+Training Run 2: 75% → 82% accuracy → Updated model/best_yolov8m-seg.pt
+Training Run 3: 82% → 87% accuracy → Updated model/best_yolov8m-seg.pt
+```
 
 ## Performance Tips
 
@@ -155,20 +194,27 @@ python train_segmentation_model.py --imgsz 1024
 python train_segmentation_model.py --batch 16
 ```
 
+### Starting Fresh?
+```bash
+# Ignore previous model, start from pre-trained YOLOv8-Seg
+python train_segmentation_model.py --model m --no-continuous --epochs 50
+```
+
 ## Documentation
 
 - **SEGMENTATION_GUIDE.md** - Comprehensive user guide with examples
 - **SEGMENTATION_IMPLEMENTATION_SUMMARY.md** - Technical architecture details
 - **IMPLEMENTATION_COMPLETE.txt** - Quick reference and next steps
 
-## Key Differences: Detection vs Segmentation
+## Progressive Training Features
 
-| Aspect | Detection | Segmentation |
-|--------|-----------|--------------|
-| Output | Bounding boxes | Pixel-level masks |
-| Format | `.txt` coordinates | `.png` binary images |
-| Model | YOLOv8 detect | YOLOv8-Seg |
-| Values | Center, width, height | 0/255 binary mask |
+| Feature | Description |
+|---------|-------------|
+| **Continuous Training** | Automatically loads previous best model for next training session |
+| **Training History** | Tracks all training runs with timestamps and epochs |
+| **Persistent Model** | Single best model file updated incrementally |
+| **Automatic Checkpoint** | Best weights copied to persistent location after each training |
+| **No Manual Steps** | Just run the script - it handles everything automatically |
 
 ## Troubleshooting
 
@@ -191,10 +237,11 @@ python inspect_gpkg.py ../../data/vector/carto/karto.gpkg
 
 ## Next Steps
 
-1. ✅ Read SEGMENTATION_GUIDE.md
-2. ✅ Generate dataset: `python run_segmentation_pipeline.py --test`
-3. ✅ Train model: `python train_segmentation_model.py --model n --epochs 10`
-4. ✅ Review metrics and saved model
+1. ✅ Generate initial dataset: `python run_segmentation_pipeline.py --test`
+2. ✅ Start training: `python train_segmentation_model.py --model m --epochs 50`
+3. ✅ When new imagery arrives, add it to `dataset/yolo_buildings_seg/`
+4. ✅ Run training again: `python train_segmentation_model.py --model m --epochs 50`
+5. ✅ Check training history: `python train_segmentation_model.py --show-history`
 
 ## Support
 
