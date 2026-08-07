@@ -1,6 +1,6 @@
 task: segment
 mode: train
-model: yolov8m-seg.pt
+model: C:\Users\Gontzal\GIS\Segmentation-1\model\best_yolov8m-seg.pt
 data: C:\Users\Gontzal\GIS\Segmentation-1\dataset\yolo_buildings_seg\data.yaml
 epochs: 100
 time: null
