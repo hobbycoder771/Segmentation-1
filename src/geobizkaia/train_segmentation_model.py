@@ -1,4 +1,7 @@
-"""YOLO Segmentation Model Training Script.
+"""
+train_segmentation_model.py
+
+YOLO Segmentation Model Training Script.
 
 Progressive training: Train incrementally as new imagery becomes available.
 The best model from each training session is saved and used for the next session.
@@ -21,6 +24,8 @@ import shutil
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
+    filename="train_segmentation_model.log",
+    filemode="a",
 )
 logger = logging.getLogger(__name__)
 

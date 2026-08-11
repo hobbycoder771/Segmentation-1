@@ -11,7 +11,7 @@ from shapely.geometry import shape
 
 def list_extents(gpkg_path, layer_name):
     gdf = gpd.read_file(
-        gpkg_path,  # r"..\..\data\vector\extents\extent.gpkg",
+        gpkg_path,  # r"C:\Users\Gontzal\GIS\geobizkaia\extent.gpkg",
         layer=layer_name,  # "extent"
     )
     # Create a list of extent tuples
@@ -175,13 +175,13 @@ def extract_map_server_by_extent(
 
 # --------------------------------------------------------------------------------
 
-project_path = r"C:\Users\gonzalo.echeverria\BILBOMATICA\TASK\GeoBizkaia-Segmentation-1"
+project_path = r"C:\Users\Gontzal\GIS\Segmentation-1"
 
 carto_service_url = "https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/Kartografia_BTB_Cartografia_5000/FeatureServer/16/query"
 mapserver_url = "https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/ORTO_EJ_2024/MapServer/export"
 
 
-gpkg_path = os.path.join(project_path, r"data\vector\extents\extent.gpkg")
+gpkg_path = os.path.join(project_path, r"C:\Users\Gontzal\GIS\geobizkaia\extent.gpkg")
 layer_name = "extent"
 
 # list of extents
@@ -191,7 +191,7 @@ for i, extent in enumerate(extents_list, start=1):
     clip_feature_server_by_extent(
         carto_service_url,
         extent,
-        os.path.join(project_path, r"data\vector\carto"),
+        os.path.join(project_path, r"data\test"),
         "buildings",
         i,
     )
@@ -199,7 +199,7 @@ for i, extent in enumerate(extents_list, start=1):
     extract_map_server_by_extent(
         mapserver_url,
         extent,
-        r"data\imagery",
+        r"data\test",
         "imagery",  # {out_name}_tile_{layer_count}
         i,
     )

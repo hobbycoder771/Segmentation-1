@@ -10,6 +10,8 @@ from pathlib import Path
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
+    filename="segmentation_pipeline.log",
+    filemode="a",
 )
 logger = logging.getLogger(__name__)
 
@@ -104,9 +106,9 @@ def main():
         # Create and run builder
         builder = SegmentationDataBuilder(
             imagery_url=args.imagery_url,
-            extents_gpkg_path="../../data/vector/extents/extent.gpkg",
+            extents_gpkg_path="data/vector/extents/extent.gpkg",
             extents_layer_name=args.extents_layer,
-            objects_gpkg_path="../../data/vector/carto/karto.gpkg",
+            objects_gpkg_path="data/vector/carto/karto.gpkg",
             objects_layer_name=args.objects_layer,
             output_dir=args.output_dir,
             image_size=args.image_size,
