@@ -20,6 +20,9 @@ import torch
 import json
 from datetime import datetime
 import shutil
+import os
+
+os.environ["OPENCV_LOG_LEVEL"] = "ERROR"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -35,15 +38,15 @@ class YOLOSegmentationTrainer:
 
     def __init__(
         self,
-        data_yaml: str = "../../dataset/yolo_buildings_seg/data.yaml",
+        data_yaml: str = "dataset/yolo_buildings_seg/data.yaml",
         model_size: str = "n",
         epochs: int = 100,
         imgsz: int = 640,
         batch_size: int = 4,
         device = "auto",
         patience: int = 20,
-        save_dir: str = "../../model/runs",
-        model_dir: str = "../../model",
+        save_dir: str = "model/runs",
+        model_dir: str = "model",
         continuous_training: bool = True,
     ):
         self.data_yaml = Path(data_yaml).resolve()
@@ -234,7 +237,7 @@ Examples:
                         help="Device: auto, cpu, or GPU id (0,1,2...). Default: auto")
     parser.add_argument("--patience", type=int, default=20,
                         help="Early stopping patience (epochs without improvement). Default: 20")
-    parser.add_argument("--data", default="../../dataset/yolo_buildings_seg/data.yaml",
+    parser.add_argument("--data", default="dataset/yolo_buildings_seg/data.yaml",
                         help="Path to data.yaml configuration")
     parser.add_argument("--resume", help="Resume from specific checkpoint")
     parser.add_argument("--no-continuous", action="store_true",

@@ -67,11 +67,17 @@ class SegmentationDataBuilder:
                 conn = sqlite3.connect(str(gpkg_path))
                 cursor = conn.cursor()
                 
-                # Find and remove old layer tables
-                old_layers = ["buildings_tile_0", "buildings_tile_1", "buildings_tile_2", 
-                             "buildings_tile_3", "buildings_tile_4", "buildings_tile_5",
-                             "buildings_tile_6", "buildings_tile_7", "buildings_tile_8", 
-                             "buildings_tile_9"]
+                # Dynamically discover whatever layers actually exist in the
+                # file instead of relying on a stale hardcoded list. The old
+                # hardcoded names ("buildings_tile_0" .. "buildings_tile_9")
+                # never matched the real layer names written by
+                # _save_to_karto_gpkg() (f"extent_{extent_id:04d}"), so this
+                # step used to silently drop nothing while still logging
+                # "Removed N old layers" -- DROP TABLE IF EXISTS never raises
+                # even when the table doesn't exist, so the old code always
+                # reported success regardless of whether anything happened.
+                cursor.execute("SELECT table_name FROM gpkg_contents;")
+                old_layers = [row[0] for row in cursor.fetchall()]
                 
                 removed_layers = []
                 for layer in old_layers:
@@ -84,6 +90,23 @@ class SegmentationDataBuilder:
                             cursor.execute(f"DROP TABLE IF EXISTS [{idx_table}];")
                         # Remove from gpkg_contents
                         cursor.execute("DELETE FROM gpkg_contents WHERE table_name = ?;", (layer,))
+                        # Remove from gpkg_geometry_columns -- without this,
+                        # a stale row survives and GDAL's next INSERT for
+                        # this table_name hits a UNIQUE constraint failure
+                        # ("Could not add feature to layer... UNIQUE
+                        # constraint failed: gpkg_geometry_columns.table_name")
+                        cursor.execute("DELETE FROM gpkg_geometry_columns WHERE table_name = ?;", (layer,))
+                        # Remove from other per-layer metadata tables if present.
+                        # Guarded individually since not every GeoPackage has
+                        # all of these tables -- a missing table here should
+                        # not abort cleanup of this layer.
+                        for meta_table in ["gpkg_ogr_contents", "gpkg_extensions", "gpkg_metadata_reference"]:
+                            try:
+                                cursor.execute(
+                                    f"DELETE FROM {meta_table} WHERE table_name = ?;", (layer,)
+                                )
+                            except Exception:
+                                pass
                         removed_layers.append(layer)
                     except:
                         pass
@@ -92,7 +115,7 @@ class SegmentationDataBuilder:
                 conn.close()
                 
                 if removed_layers:
-                    logger.info(f"Removed {len(removed_layers)} old layers from karto.gpkg")
+                    logger.info(f"Removed {len(removed_layers)} old layers from karto.gpkg: {removed_layers}")
                 else:
                     logger.info(f"No old layers to remove from karto.gpkg")
                     

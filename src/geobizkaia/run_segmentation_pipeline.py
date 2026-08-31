@@ -1,5 +1,7 @@
 """YOLO Segmentation Data Pipeline Runner - CLI interface."""
 
+import stat
+import time
 import argparse
 import sys
 import logging
@@ -15,27 +17,61 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
-def cleanup_output_directory(output_dir):
-    """Clean up all files from the output directory before starting the pipeline.
-    
-    This ensures we start fresh and avoid cascading tile files like:
-    test_test_test_extent_0006_tile_0089_tile_0002_tile_0000.tif
+def _on_rm_error(func, path, exc_info):
+    """shutil.rmtree onerror handler: clear read-only bit and retry once.
+ 
+    Handles the common Windows case where rmtree fails on read-only files
+    (e.g. files that came from a git checkout or certain GIS tools).
     """
-    output_path = Path(output_dir)
+    try:
+        Path(path).chmod(stat.S_IWRITE)
+        func(path)
+    except Exception:
+        raise
+    
+def cleanup_output_directory(output_dir, max_retries=3, retry_delay=1.0):
+    """Clean up all files from the output directory before starting the pipeline.
+ 
+    Unlike the original version, this RAISES if cleanup fails instead of
+    logging a warning and silently continuing with a dirty directory. On
+    Windows, a locked file (open in QGIS, an Explorer window inside the
+    folder, OneDrive sync, an .aux.xml sidecar, etc.) makes rmtree fail --
+    if that failure is swallowed, every subsequent run re-tiles whatever
+    stale files are already there, producing a constant tile count no
+    matter what --limit you pass.
+    """
+    output_path = Path(output_dir).resolve()
+    print(f"Resolved output directory: {output_path}")
+ 
     if not output_path.exists():
         logger.info(f"Output directory does not exist yet: {output_path}")
-        return
-    
-    logger.info(f"Cleaning up output directory: {output_path}")
-    try:
-        # Remove the entire output directory and recreate it to start fresh
-        shutil.rmtree(output_path)
         output_path.mkdir(parents=True, exist_ok=True)
-        logger.info("Output directory cleaned successfully")
-    except Exception as e:
-        logger.warning(f"Failed to clean output directory: {e}")
-
+        return
+ 
+    logger.info(f"Cleaning up output directory: {output_path}")
+ 
+    last_error = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            shutil.rmtree(output_path, onerror=_on_rm_error)
+            output_path.mkdir(parents=True, exist_ok=True)
+            logger.info("Output directory cleaned successfully")
+            return
+        except Exception as e:
+            last_error = e
+            logger.warning(f"Cleanup attempt {attempt}/{max_retries} failed: {e}")
+            time.sleep(retry_delay)
+ 
+    # All retries failed -- stop the pipeline instead of continuing dirty.
+    remaining = list(output_path.rglob("*")) if output_path.exists() else []
+    raise RuntimeError(
+        f"Could not clean output directory {output_path} after {max_retries} "
+        f"attempts (last error: {last_error}). {len(remaining)} old files/dirs "
+        f"still present. Close any program that may have a file open there "
+        f"(QGIS, Explorer window, OneDrive sync) and re-run. Refusing to "
+        f"continue with a dirty output directory, since that silently causes "
+        f"cascading re-tiling of old files."
+    )
 
 def main():
     parser = argparse.ArgumentParser(
@@ -46,7 +82,7 @@ def main():
     parser.add_argument("--full", action="store_true", help="Full mode: all extents")
     parser.add_argument("--limit", type=int, help="Limit extents to process")
     parser.add_argument("--split", action="store_true", help="Split into train/val/test")
-    parser.add_argument("--output-dir", default="../../dataset/yolo_buildings_seg")
+    parser.add_argument("--output-dir", default="dataset/yolo_buildings_seg")
     parser.add_argument("--image-size", type=int, default=4096)
     parser.add_argument("--no-vector-clipping", action="store_true")
     parser.add_argument("--mask-value", type=int, default=255)
@@ -60,7 +96,7 @@ def main():
         "--feature-server-url",
         default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/Kartografia_BTB_Cartografia_5000/FeatureServer/16/query",
     )
-    parser.add_argument("--carto-output-path", default="../../data/vector/carto")
+    parser.add_argument("--carto-output-path", default="data/vector/carto")
     parser.add_argument("--tile-size", type=int, default=512, help="Tile size in pixels (default: 512)")
     parser.add_argument("--tile-overlap", type=float, default=0.2, help="Tile overlap ratio 0-1 (default: 0.2)")
     parser.add_argument("--no-tiling", action="store_true", help="Disable tiling")

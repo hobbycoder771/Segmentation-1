@@ -14,10 +14,10 @@ from rasterio.windows import Window
 import matplotlib.pyplot as plt
 import numpy as np
 
-#"keremberke/yolov8m-building-segmentation"
 model = YOLO(
     r"model\best_yolov8m-seg.pt"
     #r"C:\Users\Gontzal\BILBOMATICA\keremberke\yolov8m-building-segmentation.pt"
+    #r"C:\Users\Gontzal\GIS\Segmentation-1\model\runs\train_yolov8m_seg\weights\best.pt"
 )
 
 print(type(model))
