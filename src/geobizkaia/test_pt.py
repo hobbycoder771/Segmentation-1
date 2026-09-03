@@ -25,7 +25,7 @@ print(model.task)
 print(model.names)
 
 
-TILE = 512
+TILE = 640
 OVERLAP = 64
 STRIDE = TILE - OVERLAP
 

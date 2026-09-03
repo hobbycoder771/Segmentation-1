@@ -13,23 +13,23 @@ Complete YOLO segmentation pipeline for building segmentation from aerial imager
 ## Features
 
 ### Data Pipeline
-- ✅ Download aerial imagery from ArcGIS MapServer
-- ✅ Generate segmentation masks from polygon geometries
-- ✅ **Tile large images with configurable overlap**
-- ✅ Train/val/test dataset splitting (70/15/15)
-- ✅ Automatic YOLO format configuration
+- Download aerial imagery from ArcGIS MapServer
+- Generate segmentation masks from polygon geometries
+- **Tile large images with configurable overlap**
+- Train/val/test dataset splitting (70/15/15)
+- Automatic YOLO format configuration
 
 ### Training
-- ✅ YOLOv8-Seg model support (n, s, m, l, x)
-- ✅ Continuous training/checkpointing
-- ✅ Works on CPU and GPU
-- ✅ Automatic device detection
+- YOLOv8-Seg model support (n, s, m, l, x)
+- Continuous training/checkpointing
+- Works on CPU and GPU
+- Automatic device detection
 
 ### Tiling (NEW)
-- ✅ 512px tiles (configurable)
-- ✅ 20% overlap default (configurable)
-- ✅ Data multiplication: 1 image → 121 tiles
-- ✅ GeoTIFF metadata preserved
+- 512px tiles (configurable)
+- 20% overlap default (configurable)
+- Data multiplication: 1 image → 121 tiles
+- GeoTIFF metadata preserved
 
 ## Files Created
 

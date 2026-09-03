@@ -60,11 +60,11 @@ now = datetime.now()
 start_time = now.strftime("%H:%M:%S")
 print("Start:", start_time)
 
-image_name = "arkotxa_2024"
-url = "https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/ORTO_EJ_2024/MapServer/export"
+image_name = "imagery_tile_1"
+url = "https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/ORTO_EJ_2025/MapServer/export"
 
 params = {
-    "bbox": "-319500, 5346000, -318500, 5347000",  # xmin, ymin, xmax, ymax
+    "bbox": "-294310, 5337138, -293310, 5338138",  # xmin, ymin, xmax, ymax
     "bboxSR": "3857",
     "imageSR": "3857",
     "size": "4096,4096",
@@ -81,12 +81,12 @@ image_url = result["href"]
 r = requests.get(image_url)
 r.raise_for_status()
 
-with open(f"../data/{image_name}.png", "wb") as f:
+with open(f"../../data/{image_name}.png", "wb") as f:
     f.write(r.content)
 
 print("assigning projection...")
 png_to_geotiff(
-    f"../data/{image_name}.png", result["extent"], f"../data/{image_name}_geo.tif"
+    f"../../data/{image_name}.png", result["extent"], f"../../data/{image_name}.tif"
 )
 
 now = datetime.now()
