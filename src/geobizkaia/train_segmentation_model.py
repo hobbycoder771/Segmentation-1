@@ -43,7 +43,7 @@ class YOLOSegmentationTrainer:
         epochs: int = 100,
         imgsz: int = 640,
         batch_size: int = 4,
-        device = "auto",
+        device="auto",
         patience: int = 20,
         save_dir: str = "model/runs",
         model_dir: str = "model",
@@ -60,20 +60,22 @@ class YOLOSegmentationTrainer:
         self.model_dir = Path(model_dir).resolve()
         self.continuous_training = continuous_training
 
-        self.best_model_path = self.model_dir / f"best_yolov8{model_size}-seg.pt"
+        self.best_model_path = self.model_dir / \
+            f"best_yolov8{model_size}-seg.pt"
         self.training_history_path = (
             self.model_dir / f"training_history_yolov8{model_size}-seg.json"
         )
-        
+
         if not self.data_yaml.exists():
             raise FileNotFoundError(f"data.yaml not found at {self.data_yaml}")
 
         self.model_dir.mkdir(parents=True, exist_ok=True)
-        logger.info(f"Initialized YOLOSegmentationTrainer (model: yolov8{model_size}-seg)")
-        
+        logger.info(
+            f"Initialized YOLOSegmentationTrainer (model: yolov8{model_size}-seg)")
+
         if self.best_model_path.exists():
             logger.info(f"Found existing best model: {self.best_model_path}")
-    
+
     def _get_training_history(self) -> dict:
         """Load training history from JSON file."""
         if self.training_history_path.exists():
@@ -82,22 +84,23 @@ class YOLOSegmentationTrainer:
                     return json.load(f)
             except Exception as e:
                 logger.warning(f"Failed to load training history: {e}")
-        
+
         return {
             "total_training_runs": 0,
             "total_epochs_trained": 0,
             "training_sessions": [],
         }
-    
+
     def _save_training_history(self, history: dict):
         """Save training history to JSON file."""
         try:
             with open(self.training_history_path, "w") as f:
                 json.dump(history, f, indent=2)
-            logger.info(f"Training history saved to {self.training_history_path}")
+            logger.info(
+                f"Training history saved to {self.training_history_path}")
         except Exception as e:
             logger.error(f"Failed to save training history: {e}")
-    
+
     def _update_training_history(self, epochs_trained: int, results_dir: str):
         """Update training history with new session."""
         history = self._get_training_history()
@@ -122,13 +125,13 @@ class YOLOSegmentationTrainer:
         logger.info(f"  Image size: {self.imgsz}")
         logger.info(f"  Device: {self.device}")
         logger.info(f"  Continuous training: {self.continuous_training}")
-        
+
         try:
             from ultralytics import YOLO
-            
+
             # Determine which model to load
             model_to_load = resume
-            
+
             if (
                 not resume
                 and self.continuous_training
@@ -146,10 +149,10 @@ class YOLOSegmentationTrainer:
                     logger.info(
                         f"Fresh training - loading pre-trained model: {model_to_load}"
                     )
-            
+
             logger.info(f"Loading model: {model_to_load}")
             model = YOLO(model_to_load)
-            
+
             logger.info("Starting training...")
             results = model.train(
                 data=str(self.data_yaml),
@@ -162,10 +165,13 @@ class YOLOSegmentationTrainer:
                 project=str(self.save_dir),
                 name=f"train_yolov8{self.model_size}_seg",
                 exist_ok=True,
+                workers=6,        # tune to your physical core count, not logical
+                cache="disk",      # or True for RAM cache if dataset fits in memory
             )
-            
-            logger.info(f"Training completed. Results saved to: {results.save_dir}")
-            
+
+            logger.info(
+                f"Training completed. Results saved to: {results.save_dir}")
+
             # Copy best model to persistent location (for progressive training)
             if self.continuous_training:
                 training_best = Path(results.save_dir) / "weights" / "best.pt"
@@ -174,12 +180,13 @@ class YOLOSegmentationTrainer:
                     logger.info(
                         f"Copied best model to persistent location: {self.best_model_path}"
                     )
-                    
+
                     # Update training history
-                    self._update_training_history(self.epochs, str(results.save_dir))
-            
+                    self._update_training_history(
+                        self.epochs, str(results.save_dir))
+
             return str(self.best_model_path)
-            
+
         except Exception as e:
             logger.error(f"Training failed: {e}")
             return None
@@ -224,7 +231,7 @@ Examples:
   python train_segmentation_model.py --validate-only
         """,
     )
-    
+
     parser.add_argument("--model", default="n", choices=["n", "s", "m", "l", "x"],
                         help="Model size: nano (n), small (s), medium (m), large (l), xlarge (x). Default: n")
     parser.add_argument("--epochs", type=int, default=100,
@@ -278,8 +285,10 @@ Examples:
         logger.info("TRAINING HISTORY")
         logger.info("=" * 60)
         if history["total_training_runs"] > 0:
-            logger.info(f"Total training runs: {history['total_training_runs']}")
-            logger.info(f"Total epochs trained: {history['total_epochs_trained']}")
+            logger.info(
+                f"Total training runs: {history['total_training_runs']}")
+            logger.info(
+                f"Total epochs trained: {history['total_epochs_trained']}")
             logger.info("\nDetailed sessions:")
             for session in history["training_sessions"]:
                 logger.info(

@@ -17,7 +17,7 @@ import numpy as np
 model = YOLO(
     r"model\best_yolov8m-seg.pt"
     #r"C:\Users\Gontzal\BILBOMATICA\keremberke\yolov8m-building-segmentation.pt"
-    #r"C:\Users\Gontzal\GIS\Segmentation-1\model\runs\train_yolov8m_seg\weights\best.pt"
+    #r"model\runs\train_yolov8m_seg\weights\best.pt"
 )
 
 print(type(model))

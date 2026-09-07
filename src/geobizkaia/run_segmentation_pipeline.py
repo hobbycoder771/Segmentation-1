@@ -90,7 +90,7 @@ def main():
     parser.add_argument("--objects-layer", default="buildings")
     parser.add_argument(
         "--imagery-url",
-        default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/ORTO_EJ_2024/MapServer/export",
+        default="https://geo.bizkaia.eus/arcgisserverinspire/rest/services/Kartografia_Cartografia/ORTO_EJ_2025/MapServer/export",
     )
     parser.add_argument(
         "--feature-server-url",
